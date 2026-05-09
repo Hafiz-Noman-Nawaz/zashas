@@ -53,7 +53,7 @@ export default function HeroSection() {
   return (
     <section
       className="relative overflow-hidden"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "100dvh" }}
     >
       {/* Background Images with Crossfade and slow zoom */}
       {SLIDES.map((slideItem, idx) => (
@@ -76,7 +76,7 @@ export default function HeroSection() {
             alt={slideItem.heading}
             fill
             priority={idx === 0}
-            className="object-cover"
+            className="object-cover object-top md:object-center"
             sizes="100vw"
           />
           {/* Elegant Dark/Glassmorphic Overlay for text readability */}
@@ -119,7 +119,7 @@ export default function HeroSection() {
 
       {/* Content */}
       <div className="container-luxe relative z-10 flex flex-col items-center justify-center text-center"
-           style={{ minHeight: "100vh", padding: "60px 24px", paddingTop: "calc(var(--nav-height) + 40px)" }}>
+           style={{ minHeight: "100dvh", padding: "60px 24px", paddingTop: "calc(var(--nav-height) + 40px)" }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={`text-${current}`}
