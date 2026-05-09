@@ -8,32 +8,36 @@ import { motion, AnimatePresence } from "framer-motion";
 /* ── Hero slides — using images from /assets/Hero Images ── */
 const SLIDES = [
   {
-    image: "/assets/Hero Images/hero 1.png",
+    desktopImage: "/assets/Hero Images/hero 1.png",
+    mobileImage: "/assets/mobile hero images/mobile hero 1.png",
     tagline: "Luxury Pakistani Fashion",
     heading: "Elegance Woven Into Every Thread",
     subtitle: "Discover our curated collection of premium unstitched fabrics and exquisite designs.",
-    position: "left top", // Try 'left top', 'right top', or 'center top' depending on where the girl is
+    position: "center", 
   },
   {
-    image: "/assets/Hero Images/hero 2.png",
+    desktopImage: "/assets/Hero Images/hero 2.png",
+    mobileImage: "/assets/mobile hero images/mobile hero 2.png",
     tagline: "New Season Collection",
     heading: "Where Tradition Meets Modernity",
     subtitle: "Handpicked fabrics from the finest mills — crafted for the modern woman.",
-    position: "left top",
+    position: "center",
   },
   {
-    image: "/assets/Hero Images/hero 4.png",
+    desktopImage: "/assets/Hero Images/hero 4.png",
+    mobileImage: "/assets/mobile hero images/mobile hero 4.png",
     tagline: "Exclusive Designs",
     heading: "Draped in Grace & Luxury",
     subtitle: "From chiffon to organza — every thread tells a story of Pakistani craftsmanship.",
-    position: "left top",
+    position: "center",
   },
   {
-    image: "/assets/Hero Images/hero 5.png",
+    desktopImage: "/assets/Hero Images/hero 5.png",
+    mobileImage: "/assets/mobile hero images/mobile hero 5.png",
     tagline: "Timeless Elegance",
     heading: "Unveil Your Signature Style",
     subtitle: "Premium unstitched & stitched collections — designed for every occasion.",
-    position: "left top",
+    position: "center",
   },
 ];
 
@@ -75,13 +79,24 @@ export default function HeroSection() {
           }}
           style={{ pointerEvents: current === idx ? "auto" : "none" }}
         >
+          {/* Desktop Image */}
           <Image
-            src={slideItem.image}
+            src={slideItem.desktopImage}
             alt={slideItem.heading}
             fill
             priority={idx === 0}
-            className="object-cover"
+            className="object-cover hidden md:block"
             style={{ objectPosition: slideItem.position || "center" }}
+            sizes="100vw"
+          />
+          {/* Mobile Image */}
+          <Image
+            src={slideItem.mobileImage}
+            alt={slideItem.heading}
+            fill
+            priority={idx === 0}
+            className="object-cover block md:hidden"
+            style={{ objectPosition: "center" }}
             sizes="100vw"
           />
           {/* Elegant Dark/Glassmorphic Overlay for text readability */}
