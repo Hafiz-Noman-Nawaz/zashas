@@ -12,24 +12,28 @@ const SLIDES = [
     tagline: "Luxury Pakistani Fashion",
     heading: "Elegance Woven Into Every Thread",
     subtitle: "Discover our curated collection of premium unstitched fabrics and exquisite designs.",
+    position: "left top", // Try 'left top', 'right top', or 'center top' depending on where the girl is
   },
   {
     image: "/assets/Hero Images/hero 2.png",
     tagline: "New Season Collection",
     heading: "Where Tradition Meets Modernity",
     subtitle: "Handpicked fabrics from the finest mills — crafted for the modern woman.",
+    position: "left top",
   },
   {
     image: "/assets/Hero Images/hero 4.png",
     tagline: "Exclusive Designs",
     heading: "Draped in Grace & Luxury",
     subtitle: "From chiffon to organza — every thread tells a story of Pakistani craftsmanship.",
+    position: "left top",
   },
   {
     image: "/assets/Hero Images/hero 5.png",
     tagline: "Timeless Elegance",
     heading: "Unveil Your Signature Style",
     subtitle: "Premium unstitched & stitched collections — designed for every occasion.",
+    position: "left top",
   },
 ];
 
@@ -76,7 +80,8 @@ export default function HeroSection() {
             alt={slideItem.heading}
             fill
             priority={idx === 0}
-            className="object-cover object-top md:object-center"
+            className="object-cover"
+            style={{ objectPosition: slideItem.position || "center" }}
             sizes="100vw"
           />
           {/* Elegant Dark/Glassmorphic Overlay for text readability */}

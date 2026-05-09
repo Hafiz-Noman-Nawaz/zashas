@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { BRAND_NAME, NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
+import { BRAND_NAME, NAV_LINKS, SOCIAL_LINKS, EMAIL, WHATSAPP_NUMBER } from "@/lib/constants";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -104,8 +104,8 @@ export default function Footer() {
               Get in Touch
             </h4>
             <ul className="space-y-3 text-sm" style={{ color: "#9a9590" }}>
-              <li>Email: info@zashascollection.com</li>
-              <li>WhatsApp: +92 300 0000000</li>
+              <li>Email: {EMAIL}</li>
+              <li>WhatsApp: +{WHATSAPP_NUMBER}</li>
               <li>Lahore, Pakistan</li>
             </ul>
           </div>

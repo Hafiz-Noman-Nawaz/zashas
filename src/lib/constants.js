@@ -2,8 +2,8 @@
 
 export const BRAND_NAME = "Zasha's Collection";
 export const BRAND_TAGLINE = "Luxury Pakistani Clothing";
-export const WHATSAPP_NUMBER = "923000000000"; // Update with actual WhatsApp number
-
+export const WHATSAPP_NUMBER = "923034066871"; // Actual WhatsApp number
+export const EMAIL = "collectionszashas@gmail.com";
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Collections", href: "/collections" },
