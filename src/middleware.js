@@ -3,8 +3,8 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 // Define protected routes. Right now, only checkout is protected.
 const isProtectedRoute = createRouteMatcher(["/checkout(.*)"]);
 
-export default clerkMiddleware((auth, req) => {
-  if (isProtectedRoute(req)) {
+export default clerkMiddleware((auth, request) => {
+  if (isProtectedRoute(request)) {
     auth().protect();
   }
 });

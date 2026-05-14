@@ -35,5 +35,5 @@ export const SORT_OPTIONS = [
 export const SOCIAL_LINKS = {
   instagram: "https://instagram.com/zashascollection",
   facebook: "https://facebook.com/zashascollection",
-  whatsapp: `https://wa.me/${WHATSAPP_NUMBER}`,
+  whatsapp: `https://api.whatsapp.com/send?phone=+${WHATSAPP_NUMBER}`,
 };

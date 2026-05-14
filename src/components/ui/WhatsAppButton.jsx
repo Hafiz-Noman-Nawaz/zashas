@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 export default function WhatsAppButton() {
-  const link = `https://wa.me/${WHATSAPP_NUMBER}`;
+  const link = `https://api.whatsapp.com/send?phone=+${WHATSAPP_NUMBER}`;
 
   return (
     <motion.a

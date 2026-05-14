@@ -19,7 +19,7 @@ export function discountPercent(original, discounted) {
  */
 export function whatsappLink(phone, message) {
   const encoded = encodeURIComponent(message);
-  return `https://wa.me/${phone}?text=${encoded}`;
+  return `https://api.whatsapp.com/send?phone=+${phone}&text=${encoded}`;
 }
 
 /**
