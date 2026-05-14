@@ -80,7 +80,7 @@ export function CartProvider({ children }) {
   };
 
   const cartTotal = cartItems.reduce((total, item) => {
-    const price = item.salePrice || item.price || 0;
+    const price = item.discountedPrice || item.price || 0;
     return total + price * item.quantity;
   }, 0);
 

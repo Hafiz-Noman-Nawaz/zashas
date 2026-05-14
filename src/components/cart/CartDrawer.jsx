@@ -108,7 +108,7 @@ export default function CartDrawer() {
                         </p>
                       )}
                       <p className="text-sm font-medium mt-1" style={{ color: "var(--color-gold)" }}>
-                        Rs {item.salePrice || item.price}
+                        Rs {item.discountedPrice || item.price}
                       </p>
 
                       {/* Quantity & Remove */}

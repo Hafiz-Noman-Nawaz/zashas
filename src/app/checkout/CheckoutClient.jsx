@@ -221,7 +221,7 @@ export default function CheckoutClient() {
                         </div>
                         <div className="text-right">
                           <p className="font-medium" style={{ color: "var(--text-primary)" }}>
-                            Rs {(item.salePrice || item.price) * item.quantity}
+                            Rs {(item.discountedPrice || item.price) * item.quantity}
                           </p>
                           <button onClick={() => removeFromCart(item.cartItemId)} className="text-xs text-red-500 hover:underline mt-1">Remove</button>
                         </div>
