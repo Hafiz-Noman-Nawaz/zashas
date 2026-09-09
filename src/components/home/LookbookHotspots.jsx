@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { FiShoppingBag, FiCheck, FiArrowRight, FiX } from "react-icons/fi";
+import { ShoppingBag, Check, ArrowRight, X } from "lucide-react";
 
 const LOOKBOOK_ITEMS = [
   {
@@ -229,11 +229,11 @@ export default function LookbookHotspots() {
                   >
                     {addedItem === activeSpot.id ? (
                       <>
-                        <FiCheck className="w-4 h-4" /> Added to Bag
+                        <Check className="w-4 h-4" /> Added to Bag
                       </>
                     ) : (
                       <>
-                        <FiShoppingBag className="w-4 h-4" /> Quick Add Piece
+                        <ShoppingBag className="w-4 h-4" /> Quick Add Piece
                       </>
                     )}
                   </button>
@@ -242,7 +242,7 @@ export default function LookbookHotspots() {
                     href="/shop"
                     className="w-full py-2.5 px-4 rounded-xl font-mono text-[11px] uppercase tracking-wider text-center text-[#d4af37] hover:text-white border border-[#d4af37]/30 hover:border-[#d4af37] flex items-center justify-center gap-2 transition-all"
                   >
-                    Browse Full Collection <FiArrowRight className="w-3.5 h-3.5" />
+                    Browse Full Collection <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
