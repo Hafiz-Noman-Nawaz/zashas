@@ -82,7 +82,7 @@ export default function CartDrawer() {
                       <Sparkles size={13} /> Complimentary Delivery Unlocked!
                     </span>
                   )}
-                  <span className="font-mono text-[11px]">{shippingProgress}%</span>
+                  <span className="font-sans font-medium text-[11px]" style={{ color: "var(--color-gold-dark)" }}>{shippingProgress}%</span>
                 </div>
                 <div className="w-full h-1.5 rounded-full overflow-hidden bg-black/10 dark:bg-white/10">
                   <motion.div
@@ -234,11 +234,11 @@ export default function CartDrawer() {
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center text-sm" style={{ color: "var(--text-secondary)" }}>
                     <span>Subtotal</span>
-                    <span className="font-mono">Rs. {cartTotal.toLocaleString("en-PK")}</span>
+                    <span className="font-sans font-medium">Rs. {cartTotal.toLocaleString("en-PK")}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm" style={{ color: "var(--text-secondary)" }}>
                     <span>Nationwide Delivery</span>
-                    <span className={amountToFreeShipping <= 0 ? "font-bold text-emerald-600 font-mono" : "text-xs"}>
+                    <span className={amountToFreeShipping <= 0 ? "font-bold text-[#173326] dark:text-[#E8BE68] font-sans" : "text-xs"}>
                       {amountToFreeShipping <= 0 ? "FREE" : "Calculated at checkout"}
                     </span>
                   </div>

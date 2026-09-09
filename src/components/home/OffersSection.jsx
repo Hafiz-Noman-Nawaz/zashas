@@ -26,7 +26,7 @@ export default function OffersSection() {
     <section
       className="section-spacer"
       style={{
-        background: "linear-gradient(135deg, #1a1714 0%, #0d0d0d 100%)",
+        background: "linear-gradient(135deg, #09130F 0%, #050C09 100%)",
       }}
     >
       <div className="container-luxe">
@@ -92,8 +92,8 @@ function OfferCard({ offer, index }) {
     <motion.div
       className="group relative rounded-xl p-7 overflow-hidden"
       style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(201,169,110,0.12)",
+        background: "rgba(23, 51, 38, 0.25)",
+        border: "1px solid rgba(212, 160, 56, 0.2)",
       }}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -105,7 +105,7 @@ function OfferCard({ offer, index }) {
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at 50% 0%, rgba(201,169,110,0.08) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse at 50% 0%, rgba(212, 160, 56, 0.14) 0%, transparent 70%)",
         }}
       />
 

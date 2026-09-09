@@ -44,8 +44,8 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        {/* Subtle Luxury Top Bar (Unified with Header) */}
-        <div className="bg-[#0d0c0a] text-[#c9a96e] text-[10px] sm:text-[11px] font-sans tracking-[0.22em] uppercase py-2 text-center border-b border-[#c9a96e]/15 px-4 select-none">
+        {/* Subtle Luxury Top Bar (Imperial Emerald & Royal Zari) */}
+        <div className="bg-[#0e1f17] text-[#d4a038] text-[10px] sm:text-[11px] font-sans tracking-[0.22em] uppercase py-2 text-center border-b border-[#d4a038]/20 px-4 select-none">
           <span>
             Complimentary Shipping Across Pakistan &bull; Bespoke Bridal Atelier &bull; Handcrafted in Lahore
           </span>
@@ -59,7 +59,7 @@ export default function Navbar() {
             background: scrolled
               ? "var(--nav-glass)"
               : isDark
-              ? "rgba(14, 14, 14, 0.95)"
+              ? "rgba(9, 19, 15, 0.96)"
               : "rgba(250, 247, 242, 0.96)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",

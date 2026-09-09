@@ -134,7 +134,7 @@ export default function TrackOrderClient() {
                   <span className="text-xs uppercase tracking-wider" style={{ color: "var(--text-secondary)" }}>
                     Order Number
                   </span>
-                  <h3 className="font-mono text-xl font-bold mt-0.5" style={{ color: "var(--color-gold)" }}>
+                  <h3 className="font-sans text-xl font-bold tracking-wider mt-0.5" style={{ color: "var(--color-gold)" }}>
                     #{order.orderId ? String(order.orderId).slice(-8).toUpperCase() : ""}
                   </h3>
                 </div>
@@ -160,7 +160,7 @@ export default function TrackOrderClient() {
                       <p className="text-xs text-amber-800 dark:text-amber-300 font-semibold uppercase tracking-wider">
                         {order.courierDetails.courierName || "Courier"} Tracking ID
                       </p>
-                      <p className="font-mono text-base font-bold" style={{ color: "var(--text-primary)" }}>
+                      <p className="font-sans text-base font-bold tracking-wider" style={{ color: "var(--text-primary)" }}>
                         {order.courierDetails.trackingNumber}
                       </p>
                     </div>
@@ -227,7 +227,7 @@ export default function TrackOrderClient() {
                       </div>
                       <div className="text-right">
                         <p style={{ color: "var(--text-secondary)" }}>Qty: {it.quantity}</p>
-                        <p className="font-bold font-mono mt-0.5" style={{ color: "var(--color-gold)" }}>
+                        <p className="font-bold font-sans mt-0.5" style={{ color: "var(--color-gold)" }}>
                           Rs {(it.price * it.quantity).toLocaleString()}
                         </p>
                       </div>

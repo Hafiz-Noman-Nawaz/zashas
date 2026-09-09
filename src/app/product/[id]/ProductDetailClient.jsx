@@ -531,7 +531,7 @@ export default function ProductDetailClient() {
                 <details className="py-3.5 group cursor-pointer">
                   <summary className="flex items-center justify-between text-xs uppercase font-bold tracking-wider list-none select-none" style={{ color: "var(--text-primary)" }}>
                     <span className="flex items-center gap-2">🧵 Fabric & Craftsmanship</span>
-                    <span className="transition-transform group-open:rotate-180 text-sm font-mono text-[var(--color-gold)]">▾</span>
+                    <span className="transition-transform group-open:rotate-180 text-sm text-[var(--color-gold)]">▾</span>
                   </summary>
                   <div className="pt-3 text-xs leading-relaxed space-y-1.5" style={{ color: "var(--text-secondary)" }}>
                     <p>• <strong>Primary Fabric:</strong> {product.fabric || "Pure Premium Lawn / Chiffon Jacquard"}.</p>
@@ -545,7 +545,7 @@ export default function ProductDetailClient() {
                 <details className="py-3.5 group cursor-pointer">
                   <summary className="flex items-center justify-between text-xs uppercase font-bold tracking-wider list-none select-none" style={{ color: "var(--text-primary)" }}>
                     <span className="flex items-center gap-2">📏 Sizing & Tailoring Guide (Inches)</span>
-                    <span className="transition-transform group-open:rotate-180 text-sm font-mono text-[var(--color-gold)]">▾</span>
+                    <span className="transition-transform group-open:rotate-180 text-sm text-[var(--color-gold)]">▾</span>
                   </summary>
                   <div className="pt-3 text-xs space-y-2" style={{ color: "var(--text-secondary)" }}>
                     <div className="overflow-x-auto">
@@ -559,7 +559,7 @@ export default function ProductDetailClient() {
                             <th className="p-1.5">Length</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y font-mono" style={{ borderColor: "var(--border-light)" }}>
+                        <tbody className="divide-y font-sans" style={{ borderColor: "var(--border-light)" }}>
                           <tr><td className="p-1.5 font-bold font-sans">Small (S)</td><td className="p-1.5">38"</td><td className="p-1.5">34"</td><td className="p-1.5">40"</td><td className="p-1.5">40"</td></tr>
                           <tr><td className="p-1.5 font-bold font-sans">Medium (M)</td><td className="p-1.5">41"</td><td className="p-1.5">37"</td><td className="p-1.5">43"</td><td className="p-1.5">41"</td></tr>
                           <tr><td className="p-1.5 font-bold font-sans">Large (L)</td><td className="p-1.5">44"</td><td className="p-1.5">40"</td><td className="p-1.5">47"</td><td className="p-1.5">42"</td></tr>
@@ -575,7 +575,7 @@ export default function ProductDetailClient() {
                 <details className="py-3.5 group cursor-pointer">
                   <summary className="flex items-center justify-between text-xs uppercase font-bold tracking-wider list-none select-none" style={{ color: "var(--text-primary)" }}>
                     <span className="flex items-center gap-2">🧺 Garment Care & Preservation</span>
-                    <span className="transition-transform group-open:rotate-180 text-sm font-mono text-[var(--color-gold)]">▾</span>
+                    <span className="transition-transform group-open:rotate-180 text-sm text-[var(--color-gold)]">▾</span>
                   </summary>
                   <div className="pt-3 text-xs leading-relaxed space-y-1" style={{ color: "var(--text-secondary)" }}>
                     <p>• Dry cleaning is strictly recommended for embroidered and hand-embellished pieces.</p>

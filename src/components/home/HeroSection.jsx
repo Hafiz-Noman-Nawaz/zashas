@@ -62,7 +62,7 @@ export default function HeroSection() {
   const slide = SLIDES[current];
 
   return (
-    <section className="relative overflow-hidden bg-[#0c0b0a] text-white min-h-[85vh] lg:min-h-[88vh] flex flex-col justify-center items-center">
+    <section className="relative overflow-hidden bg-[#09130F] text-white min-h-[85vh] lg:min-h-[88vh] flex flex-col justify-center items-center">
       {/* Background Slides with Slow Cinematic Dissolve */}
       {SLIDES.map((slideItem, idx) => (
         <motion.div
@@ -88,8 +88,8 @@ export default function HeroSection() {
             sizes="100vw"
           />
 
-          {/* Gentle cinematic dark wash */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0c0b0a] via-black/35 to-black/60" />
+          {/* Regal Mughal emerald dark wash */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#09130F] via-black/40 to-black/65" />
         </motion.div>
       ))}
 
@@ -105,17 +105,17 @@ export default function HeroSection() {
             className="flex flex-col items-center"
           >
             {/* Eyebrow */}
-            <p className="text-[11px] sm:text-xs font-sans tracking-[0.28em] text-[#c9a96e] uppercase mb-5">
+            <p className="text-[11px] sm:text-xs font-sans tracking-[0.28em] text-[#D4A038] uppercase mb-5">
               {slide.eyebrow}
             </p>
 
             {/* Heading */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-white tracking-tight leading-[1.12] mb-6 max-w-4xl drop-shadow-xl">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-[#FAF7F2] tracking-tight leading-[1.12] mb-6 max-w-4xl drop-shadow-xl">
               {slide.heading}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-base text-neutral-300 font-sans font-light leading-relaxed max-w-xl mx-auto mb-10">
+            <p className="text-sm sm:text-base text-neutral-200 font-sans font-light leading-relaxed max-w-xl mx-auto mb-10">
               {slide.subtitle}
             </p>
 
@@ -123,7 +123,7 @@ export default function HeroSection() {
             <div className="flex flex-wrap items-center justify-center gap-5">
               <Link
                 href={slide.ctaLink}
-                className="px-8 py-3.5 rounded-full bg-[#c9a96e] hover:bg-[#b8955a] text-black font-sans text-xs uppercase tracking-[0.18em] font-semibold flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-xl"
+                className="px-8 py-3.5 rounded-full bg-[#D4A038] hover:bg-[#E8BE68] text-[#0E1C15] font-sans text-xs uppercase tracking-[0.18em] font-bold flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-[#D4A038]/20"
               >
                 <span>{slide.ctaText}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -131,7 +131,7 @@ export default function HeroSection() {
 
               <Link
                 href="#lookbook"
-                className="px-8 py-3.5 rounded-full bg-black/40 hover:bg-black/70 text-white hover:text-[#c9a96e] border border-white/30 hover:border-[#c9a96e] font-sans text-xs uppercase tracking-[0.18em] transition-all duration-300 backdrop-blur-sm"
+                className="px-8 py-3.5 rounded-full bg-[#173326]/45 hover:bg-[#173326]/85 text-[#FAF7F2] hover:text-[#E8BE68] border border-[#D4A038]/40 hover:border-[#D4A038] font-sans text-xs uppercase tracking-[0.18em] font-medium transition-all duration-300 backdrop-blur-md"
               >
                 View Lookbook
               </Link>
@@ -149,7 +149,7 @@ export default function HeroSection() {
               className="h-1 rounded-full transition-all duration-500"
               style={{
                 width: current === i ? 28 : 10,
-                background: current === i ? "#c9a96e" : "rgba(255,255,255,0.35)",
+                background: current === i ? "#D4A038" : "rgba(212,160,56,0.35)",
               }}
             />
           ))}

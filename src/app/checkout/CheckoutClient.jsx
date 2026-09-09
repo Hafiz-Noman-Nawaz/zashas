@@ -396,12 +396,12 @@ export default function CheckoutClient() {
                             <div className="bg-[var(--bg-primary)] p-3 rounded border flex justify-between items-center" style={{ borderColor: "var(--border-default)" }}>
                               <div>
                                 <p className="font-medium" style={{ color: "var(--text-primary)" }}>{selectedPaymentDetails.accountTitle}</p>
-                                <p className="font-mono text-lg tracking-wider mt-1" style={{ color: "var(--color-gold)" }}>{selectedPaymentDetails.accountNumber}</p>
+                                <p className="font-sans font-bold text-lg tracking-widest mt-1" style={{ color: "var(--color-gold)" }}>{selectedPaymentDetails.accountNumber}</p>
                                 {selectedPaymentDetails.bankName && (
                                   <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>Bank: {selectedPaymentDetails.bankName}</p>
                                 )}
                                 {selectedPaymentDetails.iban && (
-                                  <p className="font-mono text-xs mt-1" style={{ color: "var(--text-secondary)" }}>IBAN: {selectedPaymentDetails.iban}</p>
+                                  <p className="font-sans font-medium text-xs mt-1 tracking-wider" style={{ color: "var(--text-secondary)" }}>IBAN: {selectedPaymentDetails.iban}</p>
                                 )}
                               </div>
                               <div className="flex flex-col gap-2">
