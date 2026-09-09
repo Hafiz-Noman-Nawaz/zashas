@@ -97,7 +97,7 @@ export default function LookbookHotspots() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <p className="text-[11px] font-mono tracking-[0.35em] text-[#d4af37] uppercase mb-2">
+          <p className="text-[11px] font-sans tracking-[0.25em] text-[#d4af37] uppercase mb-2">
             Curated Atelier Ensembles
           </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-tight text-[#fdfcf9]">
@@ -161,7 +161,7 @@ export default function LookbookHotspots() {
                         : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
                     }`}
                   >
-                    <p className="text-[10px] uppercase font-mono tracking-wider text-[#d4af37]">
+                    <p className="text-[10px] uppercase font-sans tracking-[0.18em] text-[#d4af37]">
                       {item.category}
                     </p>
                     <p className="text-xs font-serif text-white font-medium">
@@ -186,10 +186,10 @@ export default function LookbookHotspots() {
               <div className="relative rounded-2xl bg-[#171513]/90 backdrop-blur-xl border border-[#d4af37]/30 p-6 sm:p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-300">
                 {/* Header Badge */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-[#d4af37] bg-[#d4af37]/10 px-2.5 py-1 rounded-full border border-[#d4af37]/25">
+                  <span className="text-[10px] font-sans tracking-[0.18em] uppercase text-[#d4af37] bg-[#d4af37]/10 px-2.5 py-1 rounded-full border border-[#d4af37]/25">
                     {activeSpot.category}
                   </span>
-                  <span className="text-xs font-mono text-[#a39e93]">
+                  <span className="text-xs font-sans text-[#a39e93]">
                     Lookbook Item {activeSpot.id.replace("hotspot-", "0")}/03
                   </span>
                 </div>
@@ -221,7 +221,7 @@ export default function LookbookHotspots() {
                   <button
                     onClick={(e) => handleQuickAdd(activeSpot, e)}
                     disabled={addedItem === activeSpot.id}
-                    className={`w-full py-3 px-4 rounded-xl font-mono text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 shadow-lg ${
+                    className={`w-full py-3 px-4 rounded-xl font-sans text-xs uppercase tracking-[0.18em] flex items-center justify-center gap-2 transition-all duration-300 shadow-lg ${
                       addedItem === activeSpot.id
                         ? "bg-emerald-600 text-white font-medium"
                         : "bg-[#d4af37] text-black hover:bg-[#c49f2e] font-semibold hover:shadow-[#d4af37]/20 hover:scale-[1.02]"
@@ -239,8 +239,8 @@ export default function LookbookHotspots() {
                   </button>
 
                   <Link
-                    href="/shop"
-                    className="w-full py-2.5 px-4 rounded-xl font-mono text-[11px] uppercase tracking-wider text-center text-[#d4af37] hover:text-white border border-[#d4af37]/30 hover:border-[#d4af37] flex items-center justify-center gap-2 transition-all"
+                    href="/collections"
+                    className="w-full py-2.5 px-4 rounded-xl font-sans text-[11px] uppercase tracking-[0.18em] text-center text-[#d4af37] hover:text-white border border-[#d4af37]/30 hover:border-[#d4af37] flex items-center justify-center gap-2 transition-all"
                   >
                     Browse Full Collection <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
@@ -254,7 +254,7 @@ export default function LookbookHotspots() {
                 <button
                   key={item.id}
                   onClick={() => setActiveSpot(item)}
-                  className={`text-[11px] font-mono px-3 py-1.5 rounded-lg border transition-all ${
+                  className={`text-[11px] font-sans px-3 py-1.5 rounded-lg border transition-all ${
                     activeSpot?.id === item.id
                       ? "bg-[#d4af37]/20 border-[#d4af37] text-[#d4af37] font-semibold"
                       : "border-white/10 text-neutral-400 hover:text-white hover:border-white/25"

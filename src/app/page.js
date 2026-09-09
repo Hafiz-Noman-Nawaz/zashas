@@ -1,6 +1,5 @@
 import HeroSection from "@/components/home/HeroSection";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
-import HeritageStory from "@/components/home/HeritageStory";
 import LookbookHotspots from "@/components/home/LookbookHotspots";
 import CategoriesSection from "@/components/home/CategoriesSection";
 import NewArrivals from "@/components/home/NewArrivals";
@@ -17,7 +16,6 @@ export default function HomePage() {
     <>
       <HeroSection />
       <FeaturedProducts />
-      <HeritageStory />
       <LookbookHotspots />
       <CategoriesSection />
       <NewArrivals />

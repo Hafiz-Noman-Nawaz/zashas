@@ -5,12 +5,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { NAV_LINKS, BRAND_NAME } from "@/lib/constants";
+import { BRAND_NAME } from "@/lib/constants";
 import { useTheme } from "@/context/ThemeContext";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useAuth, UserButton } from "@clerk/nextjs";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Menu, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+
+const CURATED_LINKS = [
+  { label: "Collections", href: "/collections" },
+  { label: "New Arrivals", href: "/collections?filter=new" },
+  { label: "Shop The Look", href: "/#lookbook" },
+  { label: "Sale", href: "/collections?filter=sale" },
+  { label: "About", href: "/about" },
+];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -21,251 +29,199 @@ export default function Navbar() {
   const { cartCount, setIsCartOpen } = useCart();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [mobileOpen]);
-
-  const hamburgerColor = isDark ? "var(--color-gold)" : "var(--color-charcoal)";
 
   return (
     <>
-      <motion.header
-        className="fixed top-0 left-0 w-full z-50"
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          height: "var(--nav-height)",
-          background: scrolled ? "var(--nav-glass)" : "transparent",
-          backdropFilter: scrolled ? "blur(20px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-          borderBottom: scrolled
-            ? "1px solid var(--nav-border)"
-            : "1px solid transparent",
-          transition: "background 0.4s, border-color 0.4s, backdrop-filter 0.4s",
-        }}
-      >
-        <div className="container-luxe h-full flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 relative z-10 group">
-            <motion.div whileHover={{ rotate: [0, -8, 8, 0] }} transition={{ duration: 0.5 }}>
+      <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
+        {/* Subtle Luxury Top Bar (Unified with Header) */}
+        <div className="bg-[#0d0c0a] text-[#c9a96e] text-[10px] sm:text-[11px] font-sans tracking-[0.22em] uppercase py-2 text-center border-b border-[#c9a96e]/15 px-4 select-none">
+          <span>
+            Complimentary Shipping Across Pakistan &bull; Bespoke Bridal Atelier &bull; Handcrafted in Lahore
+          </span>
+        </div>
+
+        {/* Main Navigation Bar */}
+        <div
+          className="transition-all duration-300"
+          style={{
+            height: "68px",
+            background: scrolled
+              ? "var(--nav-glass)"
+              : isDark
+              ? "rgba(14, 14, 14, 0.95)"
+              : "rgba(250, 247, 242, 0.96)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            borderBottom: "1px solid var(--border-light)",
+          }}
+        >
+          <div className="container-luxe h-full flex items-center justify-between">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 relative z-10 group">
               <Image
                 src="/assets/logo-mark.svg"
                 alt={BRAND_NAME}
-                width={36}
-                height={36}
-                className="rounded-md"
-                style={{ objectFit: "contain", width: "auto", height: "36px" }}
+                width={32}
+                height={32}
+                className="rounded-sm"
+                style={{ objectFit: "contain", width: "auto", height: "30px" }}
                 priority
               />
-            </motion.div>
-            <span
-              className="text-xl tracking-wide hidden sm:inline group-hover:text-[var(--color-gold)] transition-colors duration-300"
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontWeight: 600,
-                color: "var(--text-primary)",
-              }}
-            >
-              Zasha&apos;s
-            </span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href ||
-                (link.href !== "/" && pathname.startsWith(link.href));
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="nav-link-luxe relative text-[0.7rem] font-medium tracking-[0.15em] uppercase py-1"
-                  style={{
-                    fontFamily: "var(--font-body), sans-serif",
-                    color: isActive ? "var(--color-gold)" : undefined,
-                  }}
-                >
-                  {link.label}
-                  {isActive && (
-                    <motion.div
-                      className="absolute bottom-[-4px] left-0 right-0 h-[1.5px] rounded-full"
-                      style={{ background: "var(--color-gold)" }}
-                      layoutId="nav-underline"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
-            <div className="w-[1px] h-5 mx-1" style={{ background: "var(--border-default)" }} />
-            <ThemeToggle />
-            
-            {/* Cart Button */}
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2 rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
-              aria-label="Open Cart"
-            >
-              <ShoppingBag size={20} style={{ color: "var(--text-primary)" }} />
-              <AnimatePresence>
-                {cartCount > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    className="absolute top-0 right-0 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold"
-                    style={{ background: "var(--color-gold)", color: "#fff" }}
-                  >
-                    {cartCount}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </button>
-
-            <div className="w-[1px] h-5 mx-1" style={{ background: "var(--border-default)" }} />
-            
-            {isLoaded && !isSignedIn && (
-              <Link
-                href="/sign-in"
-                className="nav-link-luxe relative text-[0.7rem] font-medium tracking-[0.15em] uppercase py-1"
-                style={{ fontFamily: "var(--font-body), sans-serif", color: "var(--text-primary)" }}
+              <span
+                className="text-2xl tracking-[0.12em] uppercase font-serif font-medium transition-colors"
+                style={{
+                  color: "var(--text-primary)",
+                }}
               >
-                Sign In
-              </Link>
-            )}
-            {isLoaded && isSignedIn && (
-              <UserButton 
-                appearance={{ 
-                  elements: { userButtonAvatarBox: "w-8 h-8", userButtonPopoverCard: "shadow-xl border border-[var(--border-light)] rounded-xl" } 
-                }} 
-              />
-            )}
-          </nav>
+                Zasha&apos;s
+              </span>
+            </Link>
 
-          {/* Mobile controls */}
-          <div className="lg:hidden flex items-center gap-3 relative z-10">
-            <ThemeToggle />
-            
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2"
-              aria-label="Open Cart"
-            >
-              <ShoppingBag size={20} style={{ color: "var(--text-primary)" }} />
-              <AnimatePresence>
-                {cartCount > 0 && (
-                  <motion.span
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    exit={{ scale: 0 }}
-                    className="absolute top-0 right-0 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold"
-                    style={{ background: "var(--color-gold)", color: "#fff" }}
-                  >
-                    {cartCount}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </button>
-
-            <button
-              className="flex flex-col gap-[5px] p-2 ml-1"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
-            >
-              <motion.span className="block w-6 h-[1.5px] rounded-full" style={{ background: hamburgerColor }}
-                animate={mobileOpen ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }} transition={{ duration: 0.3 }} />
-              <motion.span className="block w-6 h-[1.5px] rounded-full" style={{ background: hamburgerColor }}
-                animate={mobileOpen ? { opacity: 0, x: -8 } : { opacity: 1, x: 0 }} transition={{ duration: 0.2 }} />
-              <motion.span className="block w-6 h-[1.5px] rounded-full" style={{ background: hamburgerColor }}
-                animate={mobileOpen ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }} transition={{ duration: 0.3 }} />
-            </button>
-          </div>
-        </div>
-      </motion.header>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="absolute inset-0" style={{ background: "var(--bg-overlay)" }}
-              onClick={() => setMobileOpen(false)} />
-
-            <motion.nav
-              className="absolute right-0 top-0 h-full w-[80%] max-w-sm flex flex-col pt-24 px-8 pb-8"
-              style={{ background: "var(--bg-primary)" }}
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 260 }}
-            >
-              {NAV_LINKS.map((link, i) => {
-                const isActive = pathname === link.href;
+            {/* Curated Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center gap-9">
+              {CURATED_LINKS.map((link) => {
+                const isActive =
+                  pathname === link.href ||
+                  (link.href !== "/" &&
+                    link.href !== "/#lookbook" &&
+                    pathname.startsWith(link.href));
                 return (
-                  <motion.div
+                  <Link
                     key={link.href}
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.06 * i }}
+                    href={link.href}
+                    className="relative text-[11px] font-sans font-medium tracking-[0.2em] uppercase py-1 transition-colors duration-200"
+                    style={{
+                      color: isActive
+                        ? "var(--color-gold)"
+                        : "var(--text-secondary)",
+                    }}
                   >
-                    <Link
-                      href={link.href}
-                      className="flex items-center justify-between py-4 text-lg tracking-wider uppercase border-b"
-                      style={{
-                        fontFamily: "var(--font-cormorant), serif",
-                        fontWeight: isActive ? 600 : 500,
-                        color: isActive ? "var(--color-gold)" : "var(--text-primary)",
-                        borderColor: "var(--border-light)",
-                      }}
-                      onClick={() => setMobileOpen(false)}
-                    >
+                    <span className="hover:text-[var(--color-gold)] transition-colors">
                       {link.label}
-                      {isActive && (
-                        <span className="w-2 h-2 rounded-full" style={{ background: "var(--color-gold)" }} />
-                      )}
-                    </Link>
-                  </motion.div>
+                    </span>
+                    {isActive && (
+                      <motion.div
+                        className="absolute -bottom-1 left-0 right-0 h-[1.5px] rounded-full"
+                        style={{ background: "var(--color-gold)" }}
+                        layoutId="nav-underline"
+                        transition={{
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                  </Link>
                 );
               })}
-              
-              <div className="my-4 border-b" style={{ borderColor: "var(--border-light)" }} />
+            </nav>
 
+            {/* Right Controls */}
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+
+              {/* Cart Button */}
+              <button
+                onClick={() => setIsCartOpen(true)}
+                className="relative p-2 rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+                aria-label="Open Cart"
+              >
+                <ShoppingBag
+                  size={19}
+                  style={{ color: "var(--text-primary)" }}
+                />
+                {cartCount > 0 && (
+                  <span
+                    className="absolute top-1 right-1 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold"
+                    style={{ background: "var(--color-gold)", color: "#000" }}
+                  >
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Auth / Sign In */}
               {isLoaded && !isSignedIn && (
-                <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }}>
+                <Link
+                  href="/sign-in"
+                  className="hidden lg:inline-block text-[11px] font-sans tracking-[0.18em] uppercase py-1 text-[var(--text-secondary)] hover:text-[var(--color-gold)] transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
+              {isLoaded && isSignedIn && (
+                <div className="hidden lg:block scale-90">
+                  <UserButton afterSignOutUrl="/" />
+                </div>
+              )}
+
+              {/* Mobile Hamburger */}
+              <button
+                onClick={() => setMobileOpen((prev) => !prev)}
+                className="md:hidden p-2 text-[var(--text-primary)]"
+                aria-label="Toggle Menu"
+              >
+                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Slide-Out Drawer */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden overflow-hidden border-b border-[var(--border-light)]"
+              style={{ background: "var(--bg-primary)" }}
+            >
+              <div className="px-6 py-8 space-y-5">
+                {[
+                  ...CURATED_LINKS,
+                  { label: "Track Order", href: "/track-order" },
+                  { label: "Contact", href: "/contact" },
+                ].map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block text-sm font-sans tracking-[0.2em] uppercase text-[var(--text-primary)] hover:text-[var(--color-gold)] transition-colors py-1"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+
+                {isLoaded && !isSignedIn && (
                   <Link
                     href="/sign-in"
-                    className="flex items-center justify-between py-4 text-lg tracking-wider uppercase"
-                    style={{ fontFamily: "var(--font-cormorant), serif", fontWeight: 500, color: "var(--color-gold)" }}
                     onClick={() => setMobileOpen(false)}
+                    className="block text-sm font-sans tracking-[0.2em] uppercase text-[var(--color-gold)] pt-4 border-t border-[var(--border-light)]"
                   >
-                    Sign In →
+                    Sign In
                   </Link>
-                </motion.div>
-              )}
-              
-              {isLoaded && isSignedIn && (
-                <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="py-4">
-                  <UserButton showName appearance={{ elements: { userButtonBox: "flex flex-row-reverse w-full justify-between", userButtonOuterIdentifier: "text-lg tracking-wider uppercase font-serif text-[var(--text-primary)]" } }} />
-                </motion.div>
-              )}
-            </motion.nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
 
-      <div style={{ height: "var(--nav-height)" }} />
+      {/* Spacer matching top banner (35px) + navbar (68px) = 103px */}
+      <div style={{ height: "103px" }} />
     </>
   );
 }

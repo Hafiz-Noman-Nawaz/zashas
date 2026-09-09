@@ -180,13 +180,13 @@ export default function ProductCard({ product, index = 0 }) {
             {product.discountedPrice && product.discountedPrice < product.price ? (
               <>
                 <span
-                  className="text-sm font-bold font-mono tracking-tight"
+                  className="text-sm font-semibold tracking-wide"
                   style={{ color: "var(--color-gold)" }}
                 >
                   {formatPrice(product.discountedPrice)}
                 </span>
                 <span
-                  className="text-xs line-through opacity-50 font-mono"
+                  className="text-xs line-through opacity-50 font-light"
                   style={{ color: "var(--text-secondary)" }}
                 >
                   {formatPrice(product.price)}
@@ -194,7 +194,7 @@ export default function ProductCard({ product, index = 0 }) {
               </>
             ) : (
               <span
-                className="text-sm font-bold font-mono tracking-tight"
+                className="text-sm font-medium tracking-wide"
                 style={{ color: "var(--text-primary)" }}
               >
                 {formatPrice(product.price)}

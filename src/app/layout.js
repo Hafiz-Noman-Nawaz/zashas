@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/layout/Navbar";
-import AtelierMarquee from "@/components/layout/AtelierMarquee";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import CartDrawer from "@/components/cart/CartDrawer";
@@ -50,7 +49,6 @@ export default function RootLayout({ children }) {
         <body className="min-h-full flex flex-col">
           <ThemeProvider>
             <CartProvider>
-              <AtelierMarquee />
               <Navbar />
               <main className="flex-1">{children}</main>
               <Footer />
