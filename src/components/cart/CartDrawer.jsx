@@ -214,33 +214,56 @@ export default function CartDrawer() {
             {/* Footer / Summary */}
             {cartItems.length > 0 && (
               <div className="p-6 border-t bg-[var(--bg-secondary)] space-y-4" style={{ borderColor: "var(--border-default)" }}>
+                {/* Luxury Gift Packaging Addon */}
+                <div className="p-3 rounded-xl border bg-[var(--bg-primary)] flex items-start gap-3" style={{ borderColor: "var(--border-light)" }}>
+                  <input
+                    type="checkbox"
+                    id="luxury-gift-wrap"
+                    className="mt-1 rounded text-[var(--color-gold)] border-[var(--border-default)] cursor-pointer"
+                  />
+                  <label htmlFor="luxury-gift-wrap" className="text-xs cursor-pointer select-none">
+                    <span className="font-semibold block" style={{ color: "var(--text-primary)" }}>
+                      🎁 Luxury Gift Packaging & Handwritten Note (+Rs. 350)
+                    </span>
+                    <span className="text-[11px] block mt-0.5" style={{ color: "var(--text-secondary)" }}>
+                      Signature magnetic-closure rigid box, golden satin ribbon, and personalized calligraphy note.
+                    </span>
+                  </label>
+                </div>
+
                 <div className="space-y-1.5">
                   <div className="flex justify-between items-center text-sm" style={{ color: "var(--text-secondary)" }}>
                     <span>Subtotal</span>
-                    <span>Rs. {cartTotal.toLocaleString("en-PK")}</span>
+                    <span className="font-mono">Rs. {cartTotal.toLocaleString("en-PK")}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm" style={{ color: "var(--text-secondary)" }}>
-                    <span>Shipping</span>
-                    <span>{amountToFreeShipping <= 0 ? "FREE" : "Calculated at checkout"}</span>
+                    <span>Nationwide Delivery</span>
+                    <span className={amountToFreeShipping <= 0 ? "font-bold text-emerald-600 font-mono" : "text-xs"}>
+                      {amountToFreeShipping <= 0 ? "FREE" : "Calculated at checkout"}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: "var(--border-light)" }}>
-                    <span className="text-base font-medium" style={{ color: "var(--text-primary)" }}>Estimated Total</span>
-                    <span className="text-2xl font-serif font-semibold" style={{ color: "var(--text-primary)" }}>
+                    <span className="text-base font-serif" style={{ color: "var(--text-primary)" }}>Estimated Total</span>
+                    <span className="text-2xl font-serif font-bold" style={{ color: "var(--color-gold)" }}>
                       Rs. {cartTotal.toLocaleString("en-PK")}
                     </span>
                   </div>
                 </div>
 
                 <Link href="/checkout" onClick={() => setIsCartOpen(false)} className="block w-full">
-                  <button className="btn btn-gold w-full flex items-center justify-center gap-2 py-4 text-sm font-semibold tracking-widest uppercase shadow-md">
+                  <button className="btn btn-gold w-full flex items-center justify-center gap-2 py-4 text-sm font-semibold tracking-widest uppercase shadow-xl hover:shadow-2xl active:scale-[0.99] transition-all">
                     Proceed to Checkout
                     <ArrowRight size={16} />
                   </button>
                 </Link>
 
-                <p className="text-[11px] text-center opacity-70" style={{ color: "var(--text-secondary)" }}>
-                  Tax included. Secure payment transfer & Cash on Delivery supported.
-                </p>
+                <div className="flex items-center justify-center gap-4 text-[10px] uppercase tracking-wider font-semibold opacity-80" style={{ color: "var(--text-secondary)" }}>
+                  <span>✓ Cash on Delivery</span>
+                  <span>•</span>
+                  <span>✓ JazzCash / EasyPaisa</span>
+                  <span>•</span>
+                  <span>✓ 7-Day Exchange</span>
+                </div>
               </div>
             )}
           </motion.div>

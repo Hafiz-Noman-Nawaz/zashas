@@ -28,6 +28,15 @@ export default function ProductDetailClient() {
   const [quantity, setQuantity] = useState(1);
   const [selectedType, setSelectedType] = useState("Unstitched");
   const [selectedSize, setSelectedSize] = useState("M");
+  const [isZooming, setIsZooming] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomPos({ x: Math.max(0, Math.min(100, x)), y: Math.max(0, Math.min(100, y)) });
+  };
 
   const selectedVariant = selectedType === "Stitched" ? `Stitched (${selectedSize})` : "Unstitched";
 
@@ -122,33 +131,52 @@ export default function ProductDetailClient() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
             {/* Gallery */}
             <div>
-              {/* Main Image */}
-              <motion.div
-                className="img-cover rounded-xl mb-4"
+              {/* Main Image with Interactive Haute Couture Fabric Magnifier */}
+              <div
+                className="img-cover rounded-2xl mb-4 relative overflow-hidden cursor-crosshair group select-none shadow-lg"
                 style={{
                   aspectRatio: "3 / 4",
                   background: "var(--color-ivory)",
                 }}
-                key={selectedImage}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={() => setIsZooming(true)}
+                onMouseLeave={() => setIsZooming(false)}
               >
                 {images[selectedImage] ? (
-                  <Image
-                    src={images[selectedImage]}
-                    alt={product.title}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover rounded-xl"
-                    priority
-                  />
+                  <>
+                    <Image
+                      src={images[selectedImage]}
+                      alt={product.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover rounded-2xl transition-opacity duration-300"
+                      priority
+                    />
+
+                    {/* Magnifier Lens Overlay on Mouse Move */}
+                    {isZooming && (
+                      <div
+                        className="absolute inset-0 pointer-events-none z-20 transition-opacity duration-200"
+                        style={{
+                          backgroundImage: `url(${images[selectedImage]})`,
+                          backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                          backgroundSize: "260%",
+                          backgroundRepeat: "no-repeat"
+                        }}
+                      />
+                    )}
+
+                    {/* Subtle Magnifier Hint */}
+                    <div className="absolute bottom-3 right-3 z-10 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] text-white/90 font-medium pointer-events-none flex items-center gap-1 group-hover:opacity-0 transition-opacity">
+                      <span>🔍</span> Hover to Inspect Embroidery
+                    </div>
+                  </>
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span style={{ color: "var(--text-secondary)" }}>No Image</span>
                   </div>
                 )}
-              </motion.div>
+              </div>
 
               {/* Thumbnails */}
               {images.length > 1 && (
@@ -494,6 +522,69 @@ export default function ProductDetailClient() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              {/* HAUTE COUTURE ACCORDION SPEC SHEETS */}
+              <div className="mt-8 pt-6 border-t divide-y" style={{ borderColor: "var(--border-light)" }}>
+                
+                {/* Accordion 1: Fabric & Craftsmanship */}
+                <details className="py-3.5 group cursor-pointer">
+                  <summary className="flex items-center justify-between text-xs uppercase font-bold tracking-wider list-none select-none" style={{ color: "var(--text-primary)" }}>
+                    <span className="flex items-center gap-2">🧵 Fabric & Craftsmanship</span>
+                    <span className="transition-transform group-open:rotate-180 text-sm font-mono text-[var(--color-gold)]">▾</span>
+                  </summary>
+                  <div className="pt-3 text-xs leading-relaxed space-y-1.5" style={{ color: "var(--text-secondary)" }}>
+                    <p>• <strong>Primary Fabric:</strong> {product.fabric || "Pure Premium Lawn / Chiffon Jacquard"}.</p>
+                    <p>• <strong>Embroidery:</strong> Handcrafted threadwork embellished with metallic zari accents and micro-sequins.</p>
+                    <p>• <strong>Dupatta:</strong> 2.5 meters luxury digitally printed / embroidered chiffon borders.</p>
+                    <p>• <strong>Dye Quality:</strong> Reactive dye process ensuring color vibrancy and zero color fading.</p>
+                  </div>
+                </details>
+
+                {/* Accordion 2: Size & Stitching Measurement Chart */}
+                <details className="py-3.5 group cursor-pointer">
+                  <summary className="flex items-center justify-between text-xs uppercase font-bold tracking-wider list-none select-none" style={{ color: "var(--text-primary)" }}>
+                    <span className="flex items-center gap-2">📏 Sizing & Tailoring Guide (Inches)</span>
+                    <span className="transition-transform group-open:rotate-180 text-sm font-mono text-[var(--color-gold)]">▾</span>
+                  </summary>
+                  <div className="pt-3 text-xs space-y-2" style={{ color: "var(--text-secondary)" }}>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-[11px] text-left border rounded" style={{ borderColor: "var(--border-light)" }}>
+                        <thead className="bg-[var(--bg-secondary)] uppercase text-[10px]" style={{ color: "var(--text-primary)" }}>
+                          <tr>
+                            <th className="p-1.5">Size</th>
+                            <th className="p-1.5">Chest</th>
+                            <th className="p-1.5">Waist</th>
+                            <th className="p-1.5">Hips</th>
+                            <th className="p-1.5">Length</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y font-mono" style={{ borderColor: "var(--border-light)" }}>
+                          <tr><td className="p-1.5 font-bold font-sans">Small (S)</td><td className="p-1.5">38"</td><td className="p-1.5">34"</td><td className="p-1.5">40"</td><td className="p-1.5">40"</td></tr>
+                          <tr><td className="p-1.5 font-bold font-sans">Medium (M)</td><td className="p-1.5">41"</td><td className="p-1.5">37"</td><td className="p-1.5">43"</td><td className="p-1.5">41"</td></tr>
+                          <tr><td className="p-1.5 font-bold font-sans">Large (L)</td><td className="p-1.5">44"</td><td className="p-1.5">40"</td><td className="p-1.5">47"</td><td className="p-1.5">42"</td></tr>
+                          <tr><td className="p-1.5 font-bold font-sans">X-Large (XL)</td><td className="p-1.5">48"</td><td className="p-1.5">44"</td><td className="p-1.5">51"</td><td className="p-1.5">43"</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-[10px] italic opacity-80">*Unstitched fabric includes ample material with borders to stitch up to 52" chest.*</p>
+                  </div>
+                </details>
+
+                {/* Accordion 3: Garment Care & Longevity */}
+                <details className="py-3.5 group cursor-pointer">
+                  <summary className="flex items-center justify-between text-xs uppercase font-bold tracking-wider list-none select-none" style={{ color: "var(--text-primary)" }}>
+                    <span className="flex items-center gap-2">🧺 Garment Care & Preservation</span>
+                    <span className="transition-transform group-open:rotate-180 text-sm font-mono text-[var(--color-gold)]">▾</span>
+                  </summary>
+                  <div className="pt-3 text-xs leading-relaxed space-y-1" style={{ color: "var(--text-secondary)" }}>
+                    <p>• Dry cleaning is strictly recommended for embroidered and hand-embellished pieces.</p>
+                    <p>• For unstitched lawn, gentle hand-wash in cold water with mild detergent.</p>
+                    <p>• Iron on moderate heat on the reverse side to protect delicate threadwork and sequins.</p>
+                    <p>• Do not tumble dry or expose directly to prolonged harsh sunlight.</p>
+                  </div>
+                </details>
+
               </div>
 
               {/* Share */}
