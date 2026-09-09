@@ -88,7 +88,7 @@ export default function LookbookHotspots() {
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-gradient-to-b from-[#0f0e0d] via-[#141210] to-[#0c0b0a] text-[#f8f6f0] overflow-hidden relative border-y border-[#d4af37]/15">
+    <section id="lookbook" className="py-20 lg:py-28 bg-gradient-to-b from-[#0f0e0d] via-[#141210] to-[#0c0b0a] text-[#f8f6f0] overflow-hidden relative border-y border-[#d4af37]/15">
       {/* Decorative Atelier watermark */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 text-[12vw] font-serif uppercase tracking-[0.3em] text-[#d4af37]/[0.03] select-none pointer-events-none whitespace-nowrap">
         ZASHA COUTURE
