@@ -133,7 +133,7 @@ function OfferCard({ offer, index }) {
         style={{
           fontFamily: "var(--font-cormorant), serif",
           fontWeight: 600,
-          color: "#faf7f2",
+          color: "#ffffff",
         }}
       >
         {offer.title}

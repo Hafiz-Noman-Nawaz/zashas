@@ -60,7 +60,7 @@ export default function Navbar() {
               ? "var(--nav-glass)"
               : isDark
               ? "rgba(9, 19, 15, 0.96)"
-              : "rgba(250, 247, 242, 0.96)",
+              : "rgba(255, 255, 255, 0.96)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
             borderBottom: "1px solid var(--border-light)",

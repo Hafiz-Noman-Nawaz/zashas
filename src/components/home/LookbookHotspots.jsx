@@ -88,7 +88,7 @@ export default function LookbookHotspots() {
   };
 
   return (
-    <section id="lookbook" className="py-20 lg:py-28 bg-gradient-to-b from-[#07130E] via-[#0D2218] to-[#050C09] text-[#FAF7F2] overflow-hidden relative border-y border-[#D4A038]/20">
+    <section id="lookbook" className="py-20 lg:py-28 bg-gradient-to-b from-[#07130E] via-[#0D2218] to-[#050C09] text-white overflow-hidden relative border-y border-[#D4A038]/20">
       {/* Decorative Atelier watermark */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 text-[12vw] font-serif uppercase tracking-[0.3em] text-[#D4A038]/[0.03] select-none pointer-events-none whitespace-nowrap">
         ZASHA COUTURE
@@ -100,7 +100,7 @@ export default function LookbookHotspots() {
           <p className="text-[11px] font-sans tracking-[0.25em] text-[#D4A038] uppercase mb-2 font-medium">
             Curated Atelier Ensembles
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-tight text-[#FAF7F2]">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-tight text-white">
             Shop The Festive Look
           </h2>
           <div className="w-16 h-[1.5px] bg-[#D4A038] mx-auto my-4 opacity-80" />
@@ -164,7 +164,7 @@ export default function LookbookHotspots() {
                     <p className="text-[10px] uppercase font-sans tracking-[0.18em] text-[#D4A038]">
                       {item.category}
                     </p>
-                    <p className="text-xs font-serif text-[#FAF7F2] font-medium">
+                    <p className="text-xs font-serif text-white font-medium">
                       Rs. {item.price.toLocaleString()}
                     </p>
                   </div>
@@ -209,7 +209,7 @@ export default function LookbookHotspots() {
                 </div>
 
                 {/* Title & Description */}
-                <h3 className="text-xl font-serif font-medium text-[#FAF7F2] mb-2 leading-snug">
+                <h3 className="text-xl font-serif font-medium text-white mb-2 leading-snug">
                   {activeSpot.title}
                 </h3>
                 <p className="text-xs text-[#c8d4ce] font-light leading-relaxed mb-6">
@@ -223,7 +223,7 @@ export default function LookbookHotspots() {
                     disabled={addedItem === activeSpot.id}
                     className={`w-full py-3 px-4 rounded-xl font-sans text-xs uppercase tracking-[0.18em] flex items-center justify-center gap-2 transition-all duration-300 shadow-lg ${
                       addedItem === activeSpot.id
-                        ? "bg-[#173326] text-[#FAF7F2] border border-[#D4A038] font-medium"
+                        ? "bg-[#173326] text-white border border-[#D4A038] font-medium"
                         : "bg-[#D4A038] text-[#0E1C15] hover:bg-[#E8BE68] font-bold hover:shadow-[#D4A038]/20 hover:scale-[1.02]"
                     }`}
                   >

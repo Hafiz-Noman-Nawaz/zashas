@@ -108,7 +108,7 @@ export default function ProductCard({ product, index = 0 }) {
             className={`absolute top-3.5 right-3.5 z-20 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-md ${
               isWishlisted
                 ? "bg-[#8E2834] text-white scale-110 shadow-lg shadow-[#8E2834]/40"
-                : "bg-white/85 dark:bg-[#09130F]/80 text-[#0E1C15] dark:text-[#FAF7F2] backdrop-blur-md hover:bg-white dark:hover:bg-[#173326] hover:scale-110 border border-[#D4A038]/20"
+                : "bg-white/85 dark:bg-[#09130F]/80 text-[#0E1C15] dark:text-white backdrop-blur-md hover:bg-white dark:hover:bg-[#173326] hover:scale-110 border border-[#D4A038]/20"
             }`}
           >
             <Heart
@@ -132,7 +132,7 @@ export default function ProductCard({ product, index = 0 }) {
                     <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#D4A038] flex items-center gap-1 font-sans">
                       <ShoppingBag size={11} /> Quick Select & Add
                     </span>
-                    <span className="text-[9px] text-[#FAF7F2]/60 font-sans">Instant Add</span>
+                    <span className="text-[9px] text-white/70 font-sans">Instant Add</span>
                   </div>
 
                   <div className="grid grid-cols-5 gap-1 pt-0.5">
@@ -140,7 +140,7 @@ export default function ProductCard({ product, index = 0 }) {
                       <button
                         key={sz}
                         onClick={(e) => handleQuickAdd(e, sz)}
-                        className="py-1 px-1 text-[10px] font-semibold rounded-md border border-white/15 text-[#FAF7F2] hover:bg-[#D4A038] hover:border-[#D4A038] hover:text-[#0E1C15] transition-all duration-200 text-center truncate font-sans"
+                        className="py-1 px-1 text-[10px] font-semibold rounded-md border border-white/15 text-white hover:bg-[#D4A038] hover:border-[#D4A038] hover:text-[#0E1C15] transition-all duration-200 text-center truncate font-sans"
                         title={`Add ${sz} to Cart`}
                       >
                         {sz === "Unstitched" ? "Unstitch" : sz}

@@ -12,7 +12,7 @@ export default function SectionHeading({ title, subtitle, align = "center", ligh
       viewport={{ once: true }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
-      <h2 style={lightText ? { color: "#faf7f2" } : undefined}>{title}</h2>
+      <h2 style={lightText ? { color: "#ffffff" } : undefined}>{title}</h2>
       {subtitle && (
         <p className="mt-3" style={lightText ? { color: "#b5b5b5" } : undefined}>
           {subtitle}

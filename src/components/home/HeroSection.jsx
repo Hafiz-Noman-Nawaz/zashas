@@ -110,7 +110,7 @@ export default function HeroSection() {
             </p>
 
             {/* Heading */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-[#FAF7F2] tracking-tight leading-[1.12] mb-6 max-w-4xl drop-shadow-xl">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-normal text-white tracking-tight leading-[1.12] mb-6 max-w-4xl drop-shadow-xl">
               {slide.heading}
             </h1>
 
@@ -131,7 +131,7 @@ export default function HeroSection() {
 
               <Link
                 href="#lookbook"
-                className="px-8 py-3.5 rounded-full bg-[#173326]/45 hover:bg-[#173326]/85 text-[#FAF7F2] hover:text-[#E8BE68] border border-[#D4A038]/40 hover:border-[#D4A038] font-sans text-xs uppercase tracking-[0.18em] font-medium transition-all duration-300 backdrop-blur-md"
+                className="px-8 py-3.5 rounded-full bg-[#173326]/45 hover:bg-[#173326]/85 text-white hover:text-[#E8BE68] border border-[#D4A038]/40 hover:border-[#D4A038] font-sans text-xs uppercase tracking-[0.18em] font-medium transition-all duration-300 backdrop-blur-md"
               >
                 View Lookbook
               </Link>
