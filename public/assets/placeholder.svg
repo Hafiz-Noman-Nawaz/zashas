@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5ede0"/>
+      <stop offset="50%" stop-color="#ede3d3"/>
+      <stop offset="100%" stop-color="#dfcfbe"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c9a96e"/>
+      <stop offset="100%" stop-color="#a07d4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" fill="url(#bg)"/>
+  <g transform="translate(200, 220)" text-anchor="middle">
+    <!-- Luxury Diamond / Monogram Mark -->
+    <path d="M 0 -35 L 30 0 L 0 35 L -30 0 Z" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity="0.6"/>
+    <circle cx="0" cy="0" r="4" fill="url(#gold)" opacity="0.8"/>
+    <text y="70" font-family="'Cormorant Garamond', Georgia, serif" font-size="20" font-weight="500" fill="#7a7065" letter-spacing="4">ZASHA'S</text>
+    <text y="92" font-family="'Inter', sans-serif" font-size="10" font-weight="400" fill="#9e9589" letter-spacing="2">COLLECTION</text>
+  </g>
+</svg>

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, MapPin, CreditCard, CheckCircle, ArrowLeft, ArrowRight, Upload } from "lucide-react";
 import toast from "react-hot-toast";
+import { fetchActivePaymentMethods, createOrder } from "@/lib/api";
 
 const STEPS = [
   { id: 1, title: "Review Order", icon: ShoppingBag },
@@ -14,10 +15,8 @@ const STEPS = [
   { id: 3, title: "Payment", icon: CreditCard },
 ];
 
-// PAYMENT_METHODS will now be fetched dynamically from the API
-
 export default function CheckoutClient() {
-  const { cartItems, cartTotal, removeFromCart } = useCart();
+  const { cartItems, cartTotal, removeFromCart, clearCart } = useCart();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [mounted, setMounted] = useState(false);
@@ -49,7 +48,6 @@ export default function CheckoutClient() {
     // Fetch dynamic payment methods
     const loadPaymentMethods = async () => {
       try {
-        const { fetchActivePaymentMethods } = require("@/lib/api");
         const res = await fetchActivePaymentMethods();
         setPaymentMethods(res.data || []);
       } catch (err) {
@@ -91,9 +89,6 @@ export default function CheckoutClient() {
 
     setIsSubmitting(true);
     try {
-      // Import here to avoid top-level issues if needed, or import at top
-      const { createOrder } = require("@/lib/api");
-      
       const payload = {
         items: cartItems.map(item => ({
           productId: item._id || item.id,
@@ -120,14 +115,15 @@ export default function CheckoutClient() {
       const res = await createOrder(payload);
       
       toast.success("Order Placed Successfully!");
+      clearCart();
       
-      // Pass the order ID to the success page for tracking
+      // Pass the order ID and payment method to the success page for tailored instructions
       const orderId = res.data?._id || res.data?.id;
-      if (orderId) {
-        router.push(`/checkout/success?orderId=${orderId}`);
-      } else {
-        router.push("/checkout/success");
-      }
+      const queryParam = new URLSearchParams();
+      if (orderId) queryParam.set("orderId", orderId);
+      if (paymentMethod) queryParam.set("method", paymentMethod);
+      
+      router.push(`/checkout/success?${queryParam.toString()}`);
       
     } catch (error) {
       console.error("Order error:", error);
@@ -210,10 +206,15 @@ export default function CheckoutClient() {
                     {cartItems.map((item) => (
                       <div key={item.cartItemId} className="flex gap-4 items-center">
                         <div className="relative w-20 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-zinc-800">
-                          <Image src={item.images?.[0]?.url || item.image || "/assets/placeholder.jpg"} alt={item.name} fill className="object-cover" />
+                          <Image 
+                            src={item.images?.[0] || item.image || "/assets/placeholder.svg"} 
+                            alt={item.title || item.name || "Product"} 
+                            fill 
+                            className="object-cover" 
+                          />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-serif text-lg" style={{ color: "var(--text-primary)" }}>{item.name}</h3>
+                          <h3 className="font-serif text-lg" style={{ color: "var(--text-primary)" }}>{item.title || item.name}</h3>
                           {item.selectedVariant && (
                             <p className="text-sm" style={{ color: "var(--text-secondary)" }}>Variant: {item.selectedVariant}</p>
                           )}
@@ -286,39 +287,65 @@ export default function CheckoutClient() {
                   className="card-luxe p-6 sm:p-8"
                 >
                   <h2 className="text-2xl font-serif mb-6 border-b pb-4" style={{ color: "var(--text-primary)", borderColor: "var(--border-light)" }}>
-                    Payment Method
+                    Select Payment Method
                   </h2>
                   <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>
-                    Select a payment method to complete your order. After placing the order, you will be redirected to WhatsApp to send your payment screenshot for confirmation.
+                    Choose your preferred payment method. We support Cash on Delivery, JazzCash, Easypaisa, and Direct Bank Transfers.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     {paymentMethods.length === 0 && (
-                      <p className="text-sm col-span-2 text-red-500">No payment methods configured. Please contact support.</p>
+                      <p className="text-sm col-span-2 text-red-500">No payment methods currently active. Please contact support.</p>
                     )}
-                    {paymentMethods.map((method) => (
-                      <label 
-                        key={method.methodId} 
-                        className="relative flex flex-col p-4 border rounded-xl cursor-pointer transition-all hover:bg-black/5 dark:hover:bg-white/5"
-                        style={{ 
-                          borderColor: paymentMethod === method.methodId ? "var(--color-gold)" : "var(--border-default)",
-                          background: paymentMethod === method.methodId ? "rgba(201,169,110,0.05)" : "var(--bg-card)",
-                        }}
-                      >
-                        <input 
-                          type="radio" 
-                          name="payment" 
-                          value={method.methodId} 
-                          checked={paymentMethod === method.methodId}
-                          onChange={(e) => setPaymentMethod(e.target.value)}
-                          className="absolute opacity-0"
-                        />
-                        <span className="font-semibold" style={{ color: paymentMethod === method.methodId ? "var(--color-gold)" : "var(--text-primary)" }}>
-                          {method.name}
-                        </span>
-                        {method.bankName && <span className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>{method.bankName}</span>}
-                      </label>
-                    ))}
+                    {paymentMethods.map((method) => {
+                      const isSelected = paymentMethod === method.methodId;
+                      const isCod = method.type === "cod" || method.provider === "cod" || method.methodId === "cod";
+                      const isGateway = method.type === "gateway";
+
+                      return (
+                        <label 
+                          key={method.methodId} 
+                          className="relative flex flex-col p-4 border rounded-xl cursor-pointer transition-all hover:bg-black/5 dark:hover:bg-white/5"
+                          style={{ 
+                            borderColor: isSelected ? "var(--color-gold)" : "var(--border-default)",
+                            background: isSelected ? "rgba(201,169,110,0.08)" : "var(--bg-card)",
+                          }}
+                        >
+                          <input 
+                            type="radio" 
+                            name="payment" 
+                            value={method.methodId} 
+                            checked={isSelected}
+                            onChange={(e) => setPaymentMethod(e.target.value)}
+                            className="absolute opacity-0"
+                          />
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-base" style={{ color: isSelected ? "var(--color-gold)" : "var(--text-primary)" }}>
+                              {method.name}
+                            </span>
+                            <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded ${
+                              isCod ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300" :
+                              isGateway ? "bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300" :
+                              "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
+                            }`}>
+                              {isCod ? "Cash on Delivery" : isGateway ? "Direct Gateway" : "Manual Transfer"}
+                            </span>
+                          </div>
+
+                          {method.bankName && (
+                            <span className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
+                              {method.bankName}
+                            </span>
+                          )}
+
+                          {isCod && (
+                            <span className="text-xs mt-1 text-emerald-600 dark:text-emerald-400">
+                              Pay in cash at your doorstep
+                            </span>
+                          )}
+                        </label>
+                      );
+                    })}
                   </div>
 
                   {selectedPaymentDetails && (
@@ -328,31 +355,73 @@ export default function CheckoutClient() {
                       className="p-5 rounded-lg border bg-[var(--bg-secondary)]"
                       style={{ borderColor: "var(--border-light)" }}
                     >
-                      <h4 className="font-medium mb-3" style={{ color: "var(--text-primary)" }}>Transfer Instructions:</h4>
-                      <div className="space-y-2 text-sm" style={{ color: "var(--text-secondary)" }}>
-                        <p>1. Send Rs {cartTotal.toLocaleString()} to the following account:</p>
-                        <div className="bg-[var(--bg-primary)] p-3 rounded border flex justify-between items-center" style={{ borderColor: "var(--border-default)" }}>
-                          <div>
-                            <p className="font-medium" style={{ color: "var(--text-primary)" }}>{selectedPaymentDetails.accountTitle}</p>
-                            <p className="font-mono text-lg tracking-wider mt-1" style={{ color: "var(--color-gold)" }}>{selectedPaymentDetails.accountNumber}</p>
-                            {selectedPaymentDetails.iban && (
-                              <p className="font-mono text-xs mt-1" style={{ color: "var(--text-secondary)" }}>IBAN: {selectedPaymentDetails.iban}</p>
-                            )}
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            <button onClick={() => copyToClipboard(selectedPaymentDetails.accountNumber)} className="text-xs uppercase tracking-wider text-[var(--color-gold)] hover:underline border border-[var(--color-gold)] px-2 py-1 rounded">
-                              Copy Acct
-                            </button>
-                            {selectedPaymentDetails.iban && (
-                              <button onClick={() => copyToClipboard(selectedPaymentDetails.iban)} className="text-xs uppercase tracking-wider text-[var(--color-gold)] hover:underline border border-[var(--color-gold)] px-2 py-1 rounded">
-                                Copy IBAN
-                              </button>
-                            )}
+                      {/* Cash On Delivery Instructions */}
+                      {(selectedPaymentDetails.type === "cod" || selectedPaymentDetails.provider === "cod" || selectedPaymentDetails.methodId === "cod") ? (
+                        <div className="space-y-3 text-sm">
+                          <h4 className="font-medium flex items-center gap-2" style={{ color: "var(--text-primary)" }}>
+                            <span>💵</span> Cash on Delivery Instructions:
+                          </h4>
+                          <div className="bg-[var(--bg-primary)] p-4 rounded border" style={{ borderColor: "var(--border-default)" }}>
+                            <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                              Pay Rs {cartTotal.toLocaleString()} in cash to the delivery rider upon receiving your package.
+                            </p>
+                            <p className="text-xs mt-2" style={{ color: "var(--text-secondary)" }}>
+                              Please have exact cash ready at delivery. You will receive an SMS and WhatsApp tracking update when your parcel is dispatched.
+                            </p>
                           </div>
                         </div>
-                        <p className="mt-2">2. Take a screenshot of the successful transaction.</p>
-                        <p>3. Click "Complete Order" below, which will open WhatsApp for you to send the screenshot.</p>
-                      </div>
+                      ) : selectedPaymentDetails.type === "gateway" ? (
+                        /* Direct Gateway Instructions */
+                        <div className="space-y-3 text-sm">
+                          <h4 className="font-medium flex items-center gap-2" style={{ color: "var(--text-primary)" }}>
+                            <span>⚡</span> Instant Digital Checkout:
+                          </h4>
+                          <div className="bg-[var(--bg-primary)] p-4 rounded border" style={{ borderColor: "var(--border-default)" }}>
+                            <p className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                              Instant payment via {selectedPaymentDetails.name} Gateway.
+                            </p>
+                            <p className="text-xs mt-2" style={{ color: "var(--text-secondary)" }}>
+                              {selectedPaymentDetails.instructions || "Your order will be verified automatically upon confirmation. You will be prompted to finalize payment securely."}
+                            </p>
+                          </div>
+                        </div>
+                      ) : (
+                        /* Manual Transfer Instructions (JazzCash / Easypaisa / Bank) */
+                        <div className="space-y-3 text-sm">
+                          <h4 className="font-medium" style={{ color: "var(--text-primary)" }}>
+                            Manual Transfer Instructions ({selectedPaymentDetails.name}):
+                          </h4>
+                          <div className="space-y-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+                            <p>1. Transfer <strong style={{ color: "var(--color-gold)" }}>Rs {cartTotal.toLocaleString()}</strong> to the following account:</p>
+                            <div className="bg-[var(--bg-primary)] p-3 rounded border flex justify-between items-center" style={{ borderColor: "var(--border-default)" }}>
+                              <div>
+                                <p className="font-medium" style={{ color: "var(--text-primary)" }}>{selectedPaymentDetails.accountTitle}</p>
+                                <p className="font-mono text-lg tracking-wider mt-1" style={{ color: "var(--color-gold)" }}>{selectedPaymentDetails.accountNumber}</p>
+                                {selectedPaymentDetails.bankName && (
+                                  <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>Bank: {selectedPaymentDetails.bankName}</p>
+                                )}
+                                {selectedPaymentDetails.iban && (
+                                  <p className="font-mono text-xs mt-1" style={{ color: "var(--text-secondary)" }}>IBAN: {selectedPaymentDetails.iban}</p>
+                                )}
+                              </div>
+                              <div className="flex flex-col gap-2">
+                                {selectedPaymentDetails.accountNumber && (
+                                  <button onClick={() => copyToClipboard(selectedPaymentDetails.accountNumber)} className="text-xs uppercase tracking-wider text-[var(--color-gold)] hover:underline border border-[var(--color-gold)] px-2 py-1 rounded">
+                                    Copy Acct
+                                  </button>
+                                )}
+                                {selectedPaymentDetails.iban && (
+                                  <button onClick={() => copyToClipboard(selectedPaymentDetails.iban)} className="text-xs uppercase tracking-wider text-[var(--color-gold)] hover:underline border border-[var(--color-gold)] px-2 py-1 rounded">
+                                    Copy IBAN
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                            <p className="mt-2">2. Take a screenshot of the successful transaction.</p>
+                            <p>3. Click "Complete Order" below, which will open WhatsApp for you to send the screenshot with your Order ID.</p>
+                          </div>
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </motion.div>

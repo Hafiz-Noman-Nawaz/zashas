@@ -14,6 +14,8 @@ export default function SuccessClient() {
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const orderId = searchParams.get("orderId");
+  const method = searchParams.get("method") || "";
+  const isCod = method.toLowerCase().includes("cod");
 
   useEffect(() => {
     setMounted(true);
@@ -23,7 +25,9 @@ export default function SuccessClient() {
 
   if (!mounted) return null;
 
-  const waMessage = `Hello Zasha's Collection! I have just placed an order on your website and would like to confirm it.\n\nTracking ID: ${orderId || "N/A"}\n\nI am attaching my payment screenshot.`;
+  const waMessage = isCod 
+    ? `Hello Zasha's Collection! I have placed a Cash on Delivery order on your website.\n\nTracking / Order ID: ${orderId || "N/A"}\n\nPlease confirm my delivery.`
+    : `Hello Zasha's Collection! I have placed an order on your website (${method || "Payment"}).\n\nTracking / Order ID: ${orderId || "N/A"}\n\nI am attaching my payment screenshot.`;
   const waLink = whatsappLink(WHATSAPP_NUMBER, waMessage);
 
   return (
@@ -49,13 +53,17 @@ export default function SuccessClient() {
             Order Placed Successfully!
           </h1>
           <p className="text-lg mb-8" style={{ color: "var(--text-secondary)" }}>
-            Thank you for shopping with Zasha's Collection. Your order has been securely logged into our system.
+            Thank you for shopping with Zasha's Collection. Your order #{orderId ? orderId.slice(-8) : ""} has been securely logged into our system.
           </p>
 
           <div className="card-luxe p-8 mb-10 max-w-md mx-auto text-left">
-            <h3 className="font-medium mb-3 text-center" style={{ color: "var(--text-primary)" }}>Final Step: Payment Confirmation</h3>
+            <h3 className="font-medium mb-3 text-center" style={{ color: "var(--text-primary)" }}>
+              {isCod ? "Cash on Delivery Confirmed" : "Final Step: Payment Confirmation"}
+            </h3>
             <p className="text-sm text-center mb-6" style={{ color: "var(--text-secondary)" }}>
-              If you selected a transfer method, please send your payment screenshot to our WhatsApp to finalize the processing of your order.
+              {isCod 
+                ? "Your parcel will be prepared for dispatch. Our courier rider will collect payment at your doorstep upon delivery." 
+                : "Please share your payment transfer screenshot on our WhatsApp to finalize processing and dispatch your parcel."}
             </p>
             
             <a 
@@ -64,7 +72,7 @@ export default function SuccessClient() {
               rel="noopener noreferrer"
               className="btn btn-whatsapp w-full flex justify-center py-4 text-base"
             >
-              Send Screenshot on WhatsApp
+              {isCod ? "Contact Us on WhatsApp" : "Send Screenshot on WhatsApp"}
             </a>
           </div>
 

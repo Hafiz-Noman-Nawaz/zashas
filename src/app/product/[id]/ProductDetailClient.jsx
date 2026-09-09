@@ -26,6 +26,10 @@ export default function ProductDetailClient() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [selectedType, setSelectedType] = useState("Unstitched");
+  const [selectedSize, setSelectedSize] = useState("M");
+
+  const selectedVariant = selectedType === "Stitched" ? `Stitched (${selectedSize})` : "Unstitched";
 
   useEffect(() => {
     setLoading(true);
@@ -88,10 +92,7 @@ export default function ProductDetailClient() {
 
   const off = discountPercent(product.price, product.discountedPrice);
   const images = product.images?.length > 0 ? product.images : [];
-  const waMessage = productInquiryMessage(
-    product,
-    typeof window !== "undefined" ? window.location.origin : ""
-  );
+  const waMessage = `Hi Zasha's Collection! I'm interested in:\n\n*${product.title}*\nOption: ${selectedVariant}\nPrice: ${formatPrice(product.discountedPrice || product.price)}\n\nLink: ${typeof window !== "undefined" ? window.location.href : ""}\n\nPlease share more details and availability.`;
   const waLink = whatsappLink(WHATSAPP_NUMBER, waMessage);
 
   return (
@@ -302,6 +303,71 @@ export default function ProductDetailClient() {
                 )}
               </div>
 
+              {/* Variant Selector: Unstitched vs Stitched */}
+              <div className="mb-6 p-4 rounded-xl border" style={{ borderColor: "var(--border-default)", background: "var(--bg-secondary)" }}>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="text-xs tracking-widest uppercase font-semibold" style={{ color: "var(--text-secondary)" }}>
+                    Suiting Option
+                  </label>
+                  <span className="text-xs font-semibold" style={{ color: "var(--color-gold-dark)" }}>
+                    {selectedVariant}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5 mb-3">
+                  {["Unstitched", "Stitched"].map((type) => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setSelectedType(type)}
+                      className="py-2.5 px-4 text-xs font-semibold rounded-lg border transition-all duration-300"
+                      style={{
+                        borderColor: selectedType === type ? "var(--color-gold)" : "var(--border-light)",
+                        background: selectedType === type ? "rgba(201,169,110,0.15)" : "var(--bg-primary)",
+                        color: selectedType === type ? "var(--color-gold-dark)" : "var(--text-primary)"
+                      }}
+                    >
+                      {type} Piece
+                    </button>
+                  ))}
+                </div>
+
+                {selectedType === "Stitched" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="pt-3 border-t"
+                    style={{ borderColor: "var(--border-light)" }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-[11px] tracking-wider uppercase font-medium" style={{ color: "var(--text-secondary)" }}>
+                        Select Size
+                      </label>
+                      <span className="text-[10px] opacity-70" style={{ color: "var(--text-secondary)" }}>
+                        Standard Sizing (Inches)
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {["XS", "S", "M", "L", "XL"].map((sz) => (
+                        <button
+                          key={sz}
+                          type="button"
+                          onClick={() => setSelectedSize(sz)}
+                          className="flex-1 py-2 text-xs font-semibold rounded-md border transition-all"
+                          style={{
+                            borderColor: selectedSize === sz ? "var(--color-gold)" : "var(--border-light)",
+                            background: selectedSize === sz ? "var(--color-gold)" : "var(--bg-primary)",
+                            color: selectedSize === sz ? "#ffffff" : "var(--text-primary)"
+                          }}
+                        >
+                          {sz}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+
               {/* Quantity & Cart Actions */}
               <div className="mb-8">
                 <div className="flex items-center gap-4 mb-4">
@@ -328,7 +394,7 @@ export default function ProductDetailClient() {
 
                 <div className="flex flex-col gap-3">
                   <button
-                    onClick={() => addToCart(product, quantity)}
+                    onClick={() => addToCart(product, quantity, selectedVariant)}
                     disabled={product.stock <= 0}
                     className="btn btn-outline w-full flex justify-center py-4 text-base tracking-widest gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -338,7 +404,7 @@ export default function ProductDetailClient() {
 
                   <button
                     onClick={() => {
-                      addToCart(product, quantity);
+                      addToCart(product, quantity, selectedVariant);
                       router.push("/checkout");
                     }}
                     disabled={product.stock <= 0}

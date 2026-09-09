@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
 
 const CartContext = createContext();
@@ -31,6 +31,7 @@ export function CartProvider({ children }) {
   }, [cartItems, isLoaded]);
 
   const addToCart = (product, quantity = 1, selectedVariant = null) => {
+    const itemName = product.title || product.name || "Item";
     setCartItems((prevItems) => {
       // Create a unique key if variants are used
       const cartItemId = selectedVariant ? `${product._id}-${selectedVariant}` : product._id;
@@ -41,13 +42,15 @@ export function CartProvider({ children }) {
         // Update quantity if item already exists
         const newItems = [...prevItems];
         newItems[existingItemIndex].quantity += quantity;
-        toast.success(`Increased quantity of ${product.name}`);
+        toast.success(`Increased quantity of ${itemName}`);
         return newItems;
       } else {
         // Add new item
-        toast.success(`Added ${product.name} to cart`);
+        toast.success(`Added ${itemName} to cart`);
         return [...prevItems, { 
-          ...product, 
+          ...product,
+          title: itemName,
+          name: itemName,
           cartItemId, 
           quantity, 
           selectedVariant 
@@ -74,10 +77,12 @@ export function CartProvider({ children }) {
     );
   };
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCartItems([]);
-    localStorage.removeItem("zasha_cart");
-  };
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("zasha_cart");
+    }
+  }, []);
 
   const cartTotal = cartItems.reduce((total, item) => {
     const price = item.discountedPrice || item.price || 0;

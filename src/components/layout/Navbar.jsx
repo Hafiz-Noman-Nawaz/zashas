@@ -56,12 +56,12 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-3 relative z-10 group">
             <motion.div whileHover={{ rotate: [0, -8, 8, 0] }} transition={{ duration: 0.5 }}>
               <Image
-                src="/assets/favicon.png"
+                src="/assets/logo-mark.svg"
                 alt={BRAND_NAME}
-                width={38}
-                height={38}
+                width={36}
+                height={36}
                 className="rounded-md"
-                style={{ objectFit: "contain", width: "auto", height: "38px" }}
+                style={{ objectFit: "contain", width: "auto", height: "36px" }}
                 priority
               />
             </motion.div>

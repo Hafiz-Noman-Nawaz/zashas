@@ -8,6 +8,7 @@ import ProductCard from "@/components/ui/ProductCard";
 import ProductCardSkeleton from "@/components/ui/ProductCardSkeleton";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { SORT_OPTIONS } from "@/lib/constants";
+import { Search, X, SlidersHorizontal } from "lucide-react";
 
 export default function CollectionsClient() {
   const searchParams = useSearchParams();
@@ -21,9 +22,14 @@ export default function CollectionsClient() {
 
   const currentCategory = searchParams.get("category") || "";
   const currentSearch = searchParams.get("search") || "";
+  const [searchValue, setSearchValue] = useState(currentSearch);
   const currentSort = searchParams.get("sort") || "newest";
   const currentPage = Number(searchParams.get("page")) || 1;
   const currentFilter = searchParams.get("filter") || "";
+
+  useEffect(() => {
+    setSearchValue(currentSearch);
+  }, [currentSearch]);
 
   const buildParams = useCallback(() => {
     const params = { page: currentPage, limit: 12, sort: currentSort };
@@ -80,23 +86,50 @@ export default function CollectionsClient() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Search */}
-          <div className="flex-1 min-w-[200px] max-w-md">
+          {/* Search Bar with Icon & Actions */}
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              updateParam("search", searchValue.trim());
+            }}
+            className="flex-1 min-w-[240px] max-w-md relative flex items-center"
+          >
+            <Search size={17} className="absolute left-3.5 text-zinc-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search products..."
-              defaultValue={currentSearch}
-              onKeyDown={(e) => { if (e.key === "Enter") updateParam("search", e.target.value); }}
-              className="input-luxe"
+              placeholder="Search fabrics, luxury suits, categories..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              className="input-luxe w-full pl-10 pr-16 text-sm"
               id="search-products"
             />
-          </div>
+            {searchValue && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchValue("");
+                  updateParam("search", "");
+                }}
+                className="absolute right-9 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                aria-label="Clear search"
+              >
+                <X size={15} />
+              </button>
+            )}
+            <button
+              type="submit"
+              className="absolute right-2 p-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-[var(--color-gold)]"
+              aria-label="Submit search"
+            >
+              <Search size={15} />
+            </button>
+          </form>
 
           <div className="flex items-center gap-3">
             <select
               value={currentSort}
               onChange={(e) => updateParam("sort", e.target.value)}
-              className="input-luxe cursor-pointer"
+              className="input-luxe cursor-pointer text-xs uppercase tracking-wider"
               style={{ width: "auto", padding: "10px 14px" }}
               id="sort-products"
             >
@@ -106,10 +139,11 @@ export default function CollectionsClient() {
             </select>
 
             <button
-              className="lg:hidden btn btn-outline text-xs py-2.5 px-5"
+              className="lg:hidden btn btn-outline text-xs py-2.5 px-4 flex items-center gap-2"
               onClick={() => setFiltersOpen(!filtersOpen)}
             >
-              {filtersOpen ? "Close" : "Filters"}
+              <SlidersHorizontal size={14} />
+              {filtersOpen ? "Hide Filters" : "Filter"}
             </button>
           </div>
         </motion.div>

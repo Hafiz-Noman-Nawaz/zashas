@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, Minus, ShoppingBag, Trash2 } from "lucide-react";
+import { X, Plus, Minus, ShoppingBag, Trash2, Sparkles, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +11,10 @@ import { useTheme } from "@/context/ThemeContext";
 export default function CartDrawer() {
   const { isCartOpen, setIsCartOpen, cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
   const { isDark } = useTheme();
+
+  const freeShippingThreshold = 10000;
+  const shippingProgress = Math.min(100, Math.round((cartTotal / freeShippingThreshold) * 100));
+  const amountToFreeShipping = freeShippingThreshold - cartTotal;
 
   // Prevent background scrolling when cart is open
   useEffect(() => {
@@ -34,7 +38,7 @@ export default function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsCartOpen(false)}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] bg-black/65 backdrop-blur-sm"
           />
 
           {/* Drawer */}
@@ -42,128 +46,201 @@ export default function CartDrawer() {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            transition={{ type: "spring", damping: 28, stiffness: 240 }}
             className="fixed top-0 right-0 bottom-0 z-[110] w-full max-w-md shadow-2xl flex flex-col"
             style={{ background: "var(--bg-primary)" }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b" style={{ borderColor: "var(--border-default)" }}>
-              <h2 className="text-2xl font-serif flex items-center gap-2" style={{ color: "var(--text-primary)" }}>
-                <ShoppingBag size={24} style={{ color: "var(--color-gold)" }} />
-                Your Cart
-              </h2>
-              <button
-                onClick={() => setIsCartOpen(false)}
-                className="p-2 rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
-              >
-                <X size={24} style={{ color: "var(--text-secondary)" }} />
-              </button>
+            <div className="p-6 border-b" style={{ borderColor: "var(--border-default)" }}>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-serif flex items-center gap-2.5" style={{ color: "var(--text-primary)" }}>
+                  <ShoppingBag size={22} style={{ color: "var(--color-gold)" }} />
+                  Shopping Bag
+                  <span className="text-xs font-sans font-normal px-2.5 py-0.5 rounded-full"
+                        style={{ background: "rgba(201,169,110,0.15)", color: "var(--color-gold-dark)" }}>
+                    {cartItems.length} {cartItems.length === 1 ? "item" : "items"}
+                  </span>
+                </h2>
+                <button
+                  onClick={() => setIsCartOpen(false)}
+                  className="p-2 rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/5"
+                  aria-label="Close cart"
+                >
+                  <X size={22} style={{ color: "var(--text-secondary)" }} />
+                </button>
+              </div>
+
+              {/* Free Shipping Progress Indicator */}
+              <div className="pt-2">
+                <div className="flex items-center justify-between text-xs mb-1.5" style={{ color: "var(--text-secondary)" }}>
+                  {amountToFreeShipping > 0 ? (
+                    <span>
+                      Add <strong style={{ color: "var(--color-gold-dark)" }}>Rs. {amountToFreeShipping.toLocaleString()}</strong> for Free Delivery
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 font-medium" style={{ color: "var(--color-success)" }}>
+                      <Sparkles size={13} /> Complimentary Delivery Unlocked!
+                    </span>
+                  )}
+                  <span className="font-mono text-[11px]">{shippingProgress}%</span>
+                </div>
+                <div className="w-full h-1.5 rounded-full overflow-hidden bg-black/10 dark:bg-white/10">
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: "linear-gradient(90deg, var(--color-gold), var(--color-gold-dark))" }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${shippingProgress}%` }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                  />
+                </div>
+              </div>
             </div>
 
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Cart Items List */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {cartItems.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-center space-y-4 opacity-70">
-                  <ShoppingBag size={64} strokeWidth={1} style={{ color: "var(--border-default)" }} />
-                  <p className="text-lg font-serif" style={{ color: "var(--text-secondary)" }}>Your cart is empty.</p>
+                <div className="flex flex-col items-center justify-center h-full text-center space-y-4 py-12">
+                  <div className="w-20 h-20 rounded-full flex items-center justify-center"
+                       style={{ background: "rgba(201,169,110,0.1)" }}>
+                    <ShoppingBag size={36} strokeWidth={1.5} style={{ color: "var(--color-gold)" }} />
+                  </div>
+                  <h3 className="text-xl font-serif" style={{ color: "var(--text-primary)" }}>Your Bag is Empty</h3>
+                  <p className="text-sm max-w-xs" style={{ color: "var(--text-secondary)" }}>
+                    Explore our luxury unstitched and ready-to-wear collections crafted for sophistication.
+                  </p>
                   <button 
                     onClick={() => setIsCartOpen(false)}
-                    className="btn btn-outline mt-4"
+                    className="btn btn-gold text-xs py-3 px-8 mt-2"
                   >
-                    Continue Shopping
+                    Explore Collections
                   </button>
                 </div>
               ) : (
-                cartItems.map((item) => (
-                  <motion.div
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    key={item.cartItemId}
-                    className="flex gap-4 p-4 rounded-xl border relative group"
-                    style={{ 
-                      borderColor: "var(--border-light)", 
-                      background: "var(--bg-secondary)" 
-                    }}
-                  >
-                    {/* Item Image */}
-                    <div className="relative w-24 h-32 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100 dark:bg-zinc-800">
-                      <Image
-                        src={item.images?.[0]?.url || item.image || "/assets/placeholder.jpg"}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
+                cartItems.map((item) => {
+                  const itemTitle = item.title || item.name || "Luxury Piece";
+                  const itemImg = item.images?.[0] || item.image || "/assets/placeholder.svg";
+                  const itemPrice = item.discountedPrice || item.price || 0;
 
-                    {/* Item Details */}
-                    <div className="flex flex-col flex-1 py-1">
-                      <h3 className="font-serif text-lg leading-tight pr-8" style={{ color: "var(--text-primary)" }}>
-                        {item.name}
-                      </h3>
-                      {item.selectedVariant && (
-                        <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-                          Type: {item.selectedVariant}
-                        </p>
-                      )}
-                      <p className="text-sm font-medium mt-1" style={{ color: "var(--color-gold)" }}>
-                        Rs {item.discountedPrice || item.price}
-                      </p>
+                  return (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      key={item.cartItemId}
+                      className="flex gap-4 p-3.5 rounded-xl border relative transition-shadow hover:shadow-sm"
+                      style={{ 
+                        borderColor: "var(--border-light)", 
+                        background: "var(--bg-secondary)" 
+                      }}
+                    >
+                      {/* Item Image */}
+                      <Link
+                        href={`/product/${item._id || item.id}`}
+                        onClick={() => setIsCartOpen(false)}
+                        className="relative w-20 h-28 rounded-lg overflow-hidden flex-shrink-0 bg-black/5 dark:bg-white/5"
+                      >
+                        <Image
+                          src={itemImg}
+                          alt={itemTitle}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      </Link>
 
-                      {/* Quantity & Remove */}
-                      <div className="mt-auto flex items-center justify-between">
-                        <div className="flex items-center border rounded-md" style={{ borderColor: "var(--border-default)" }}>
-                          <button
-                            onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
-                            className="px-2 py-1 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                      {/* Item Details */}
+                      <div className="flex flex-col flex-1 py-0.5 min-w-0">
+                        <div className="flex items-start justify-between gap-2 pr-1">
+                          <Link 
+                            href={`/product/${item._id || item.id}`}
+                            onClick={() => setIsCartOpen(false)}
+                            className="font-serif text-base leading-snug hover:text-[var(--color-gold)] transition-colors line-clamp-2" 
                             style={{ color: "var(--text-primary)" }}
                           >
-                            <Minus size={14} />
-                          </button>
-                          <span className="px-3 py-1 text-sm font-medium" style={{ color: "var(--text-primary)" }}>
-                            {item.quantity}
-                          </span>
+                            {itemTitle}
+                          </Link>
                           <button
-                            onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
-                            className="px-2 py-1 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
-                            style={{ color: "var(--text-primary)" }}
+                            onClick={() => removeFromCart(item.cartItemId)}
+                            className="p-1 text-zinc-400 hover:text-red-500 rounded-md transition-colors"
+                            aria-label="Remove item"
                           >
-                            <Plus size={14} />
+                            <Trash2 size={15} />
                           </button>
                         </div>
-                        <button
-                          onClick={() => removeFromCart(item.cartItemId)}
-                          className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-colors"
-                        >
-                          <Trash2 size={16} />
-                        </button>
+
+                        {item.selectedVariant && (
+                          <p className="text-xs mt-1 inline-block" style={{ color: "var(--text-secondary)" }}>
+                            <span className="opacity-70">Variant:</span> {item.selectedVariant}
+                          </p>
+                        )}
+
+                        <div className="mt-auto pt-2 flex items-center justify-between">
+                          <p className="text-sm font-semibold font-sans" style={{ color: "var(--color-gold-dark)" }}>
+                            Rs. {Number(itemPrice).toLocaleString("en-PK")}
+                          </p>
+
+                          {/* Quantity Controls */}
+                          <div className="flex items-center border rounded-lg bg-[var(--bg-primary)] overflow-hidden" 
+                               style={{ borderColor: "var(--border-default)" }}>
+                            <button
+                              onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
+                              className="px-2 py-1 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                              style={{ color: "var(--text-primary)" }}
+                              aria-label="Decrease quantity"
+                            >
+                              <Minus size={12} />
+                            </button>
+                            <span className="px-2.5 py-0.5 text-xs font-semibold" style={{ color: "var(--text-primary)" }}>
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
+                              className="px-2 py-1 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                              style={{ color: "var(--text-primary)" }}
+                              aria-label="Increase quantity"
+                            >
+                              <Plus size={12} />
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))
+                    </motion.div>
+                  );
+                })
               )}
             </div>
 
-            {/* Footer */}
+            {/* Footer / Summary */}
             {cartItems.length > 0 && (
-              <div className="p-6 border-t bg-[var(--bg-secondary)]" style={{ borderColor: "var(--border-default)" }}>
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-lg" style={{ color: "var(--text-secondary)" }}>Subtotal</span>
-                  <span className="text-2xl font-serif font-medium" style={{ color: "var(--text-primary)" }}>
-                    Rs {cartTotal.toLocaleString()}
-                  </span>
+              <div className="p-6 border-t bg-[var(--bg-secondary)] space-y-4" style={{ borderColor: "var(--border-default)" }}>
+                <div className="space-y-1.5">
+                  <div className="flex justify-between items-center text-sm" style={{ color: "var(--text-secondary)" }}>
+                    <span>Subtotal</span>
+                    <span>Rs. {cartTotal.toLocaleString("en-PK")}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm" style={{ color: "var(--text-secondary)" }}>
+                    <span>Shipping</span>
+                    <span>{amountToFreeShipping <= 0 ? "FREE" : "Calculated at checkout"}</span>
+                  </div>
+                  <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: "var(--border-light)" }}>
+                    <span className="text-base font-medium" style={{ color: "var(--text-primary)" }}>Estimated Total</span>
+                    <span className="text-2xl font-serif font-semibold" style={{ color: "var(--text-primary)" }}>
+                      Rs. {cartTotal.toLocaleString("en-PK")}
+                    </span>
+                  </div>
                 </div>
-                <p className="text-xs mb-4 text-center opacity-70" style={{ color: "var(--text-secondary)" }}>
-                  Shipping & taxes calculated at checkout.
+
+                <Link href="/checkout" onClick={() => setIsCartOpen(false)} className="block w-full">
+                  <button className="btn btn-gold w-full flex items-center justify-center gap-2 py-4 text-sm font-semibold tracking-widest uppercase shadow-md">
+                    Proceed to Checkout
+                    <ArrowRight size={16} />
+                  </button>
+                </Link>
+
+                <p className="text-[11px] text-center opacity-70" style={{ color: "var(--text-secondary)" }}>
+                  Tax included. Secure payment transfer & Cash on Delivery supported.
                 </p>
-                <div className="flex gap-4">
-                  <Link href="/checkout" onClick={() => setIsCartOpen(false)} className="w-full">
-                    <button className="btn btn-gold w-full flex justify-center py-4 text-base">
-                      Proceed to Checkout
-                    </button>
-                  </Link>
-                </div>
               </div>
             )}
           </motion.div>

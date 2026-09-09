@@ -41,8 +41,7 @@ export default function ProductCard({ product, index = 0 }) {
                 alt={product.title}
                 fill
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-cover transition-all duration-700 ease-out"
-                style={{ transform: "scale(1)" }}
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               {/* Second image on hover (if exists) */}
               {secondImage && (
@@ -51,23 +50,17 @@ export default function ProductCard({ product, index = 0 }) {
                   alt={`${product.title} alt`}
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"
-                  className="object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  className="object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
               )}
-              {/* Zoom on hover */}
-              <div className="absolute inset-0 group-hover:scale-105 transition-transform duration-700 ease-out" />
             </>
           ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="1" strokeLinecap="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="m21 15-5-5L5 21" />
-              </svg>
-              <span className="text-xs tracking-wider uppercase" style={{ color: "var(--text-secondary)" }}>
-                No Image
-              </span>
-            </div>
+            <Image
+              src="/assets/placeholder.svg"
+              alt={product.title || "Zasha's Collection"}
+              fill
+              className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out"
+            />
           )}
 
           {/* Badges */}
