@@ -107,6 +107,14 @@ export async function createOrder(payload) {
   return data;
 }
 
+export async function trackOrder({ orderId, phone }) {
+  const params = new URLSearchParams();
+  if (orderId) params.append("orderId", orderId);
+  if (phone) params.append("phone", phone);
+  const { data } = await api.get(`/orders/track?${params.toString()}`);
+  return data;
+}
+
 /* ═══════════════════════════════════════════════════════
  *  PAYMENT METHODS  (public)
  *

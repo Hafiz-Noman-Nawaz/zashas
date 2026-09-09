@@ -431,6 +431,71 @@ export default function ProductDetailClient() {
                 </a>
               </div>
 
+              {/* PAKISTANI E-COMMERCE TRUST BADGES & DELIVERY ESTIMATOR */}
+              <div className="mt-8 pt-6 border-t space-y-4" style={{ borderColor: "var(--border-light)" }}>
+                <div className="p-4 rounded-xl border bg-[var(--bg-secondary)]" style={{ borderColor: "var(--border-light)" }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-base">🚚</span>
+                    <span className="font-semibold text-xs tracking-wider uppercase" style={{ color: "var(--text-primary)" }}>
+                      Express Delivery Across Pakistan
+                    </span>
+                  </div>
+                  <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                    Estimated delivery in <strong>2–3 business days</strong> to Lahore, Karachi, Islamabad, Rawalpindi, Faisalabad & nationwide.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg border bg-[var(--bg-card)]" style={{ borderColor: "var(--border-default)" }}>
+                    <span className="text-lg">💵</span>
+                    <div>
+                      <strong className="block text-[11px] uppercase tracking-wider" style={{ color: "var(--text-primary)" }}>
+                        Cash on Delivery
+                      </strong>
+                      <span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>
+                        Pay safely at doorstep
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg border bg-[var(--bg-card)]" style={{ borderColor: "var(--border-default)" }}>
+                    <span className="text-lg">📱</span>
+                    <div>
+                      <strong className="block text-[11px] uppercase tracking-wider" style={{ color: "var(--text-primary)" }}>
+                        JazzCash & EasyPaisa
+                      </strong>
+                      <span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>
+                        Instant digital transfer
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg border bg-[var(--bg-card)]" style={{ borderColor: "var(--border-default)" }}>
+                    <span className="text-lg">✨</span>
+                    <div>
+                      <strong className="block text-[11px] uppercase tracking-wider" style={{ color: "var(--text-primary)" }}>
+                        100% Original Fabric
+                      </strong>
+                      <span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>
+                        Premium grade craftsmanship
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg border bg-[var(--bg-card)]" style={{ borderColor: "var(--border-default)" }}>
+                    <span className="text-lg">🔄</span>
+                    <div>
+                      <strong className="block text-[11px] uppercase tracking-wider" style={{ color: "var(--text-primary)" }}>
+                        7-Day Easy Exchange
+                      </strong>
+                      <span className="text-[10px]" style={{ color: "var(--text-secondary)" }}>
+                        Hassle-free guarantee
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Share */}
               <div className="mt-6">
                 <button

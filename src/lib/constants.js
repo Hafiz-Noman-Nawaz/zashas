@@ -9,6 +9,7 @@ export const NAV_LINKS = [
   { label: "Collections", href: "/collections" },
   { label: "New Arrivals", href: "/collections?filter=new" },
   { label: "Sale", href: "/collections?filter=sale" },
+  { label: "Track Order", href: "/track-order" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
